@@ -8,20 +8,20 @@ import {Product} from './product';
 })
 export class ListOfProductsComponent {
   @Input() products: Product[];
-  currentPage = 1;
+  @Input() currentPage: number;
   @Output() currentPageEmitter = new EventEmitter<number>();
 
   previousPage(): void {
-    if(this.currentPage > 1 ) {
+    if (this.currentPage > 1 ) {
       this.currentPage--;
+      this.currentPageEmitter.emit(-1);
     }
-    this.currentPageEmitter.emit(-1);
   }
 
   nextPage(): void {
-    if(this.currentPage < 10) {
+    if (this.currentPage < 10) {
       this.currentPage++;
+      this.currentPageEmitter.emit(1);
     }
-    this.currentPageEmitter.emit(1);
   }
 }

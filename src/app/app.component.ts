@@ -4,29 +4,42 @@ import {ProductService} from './product.service';
 
 @Component({
   selector: 'app-root',
-  template: `    
-    <left-menu [categories]="categories" (selectedCategories)="changeSelectedCategory($event)"></left-menu>
-    <list-of-products [products]="getProductWithCategory(selectedCategories)"></list-of-products>
+  template: `
+    <left-menu
+      [categories]="categories"
+      (selectedCategories)="changeSelectedCategory($event)">
+    </left-menu>
+    <list-of-products
+      [products]="getProductWithCategory(selectedCategories)"
+      [currentPage]="currentPage"
+      (currentPageEmitter)="changePage($event)">
+    </list-of-products>
   `,
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
   products: Product[] = [];
-  selectedCategories: String[] = [];
-  categories: String[];
+  selectedCategories: string[] = [];
+  categories: string[];
+  currentPage = 1;
 
   constructor(private productService: ProductService) {}
 
-  getProducts(): void {
-    this.products = this.productService.getProducts();
-    this.categories = this.removeDuplicate(this.products.map(product => product.category));
+  getProducts(categories: string[], currentPage: number): void {
+    this.products = this.productService.getProducts(categories, currentPage);
+  }
+
+  getCategories(): void {
+    this.categories = this.productService.getCategories();
   }
 
   ngOnInit(): void {
-    this.getProducts();
+    this.getCategories();
+    this.getProducts(this.categories, this.currentPage);
+
   }
 
-  changeSelectedCategory(categories: String[]): void {
+  changeSelectedCategory(categories: string[]): void {
     this.selectedCategories = categories;
   }
 
@@ -34,14 +47,8 @@ export class AppComponent implements OnInit {
     return this.products.filter(product => categories.indexOf(product.category) > -1);
   }
 
-  removeDuplicate(categories: string[]): string[] {
-    var result: string[] = [];
-    for (let category of categories) {
-      if(result.indexOf(category) === -1) {
-        result.push(category);
-      }
-    }
-    return result;
+  changePage(page: number) {
+    this.currentPage = this.currentPage + page;
   }
 
 }
