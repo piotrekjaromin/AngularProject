@@ -1,0 +1,27 @@
+<h1>Your products card</h1>
+
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Quantity</th>
+    <th>Product</th>
+    <th>Price</th>
+    <th>Value</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let product of cartProducts.keys()">
+    <td>{{cartProducts.get(product)}}</td>
+    <td>{{product.name}}</td>
+    <td>{{product.price}}</td>
+    <td>{{product.price * cartProducts.get(product)}}</td>
+    <td><button class="btn" (click)="removeProduct(product)">Remove</button></td>
+  </tr>
+  </tbody>
+
+</table>
+
+<button class="btn" (click)="showCartProducts()">Continue shopping</button>
+<button class="btn">Finalize</button>

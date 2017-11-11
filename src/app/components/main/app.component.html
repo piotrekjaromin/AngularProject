@@ -1,0 +1,28 @@
+<nav class="navbar bg-dark text-light">
+  <top-nav
+    [numberOfProduct]="cartNumberOfProducts"
+    [price]="cartPrice"
+  (showCart)="switchView()">
+  </top-nav>
+</nav>
+<div class="row" *ngIf="! showCart">
+  <div class="col-sm-2">
+    <left-menu
+      [categories]="categories"
+      (selectedCategories)="changeSelectedCategory($event)">
+    </left-menu>
+  </div>
+  <div class="col-sm-10">
+    <list-of-products
+      [products]="getProductWithCategory(selectedCategories)"
+      [numberOfPages]="numberOfPages"
+      (currentPageEmitter)="changePage($event)"
+      (addedProduct)="addToCard($event)">
+    </list-of-products>
+  </div>
+</div>
+<cart *ngIf="showCart"
+      [cartProducts]="getCartProducts()"
+      (showCart)="switchView()"
+(productToRemove)="removeProductFromCard($event)">
+</cart>

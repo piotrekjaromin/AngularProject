@@ -2,8 +2,8 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'left-menu',
-  templateUrl: 'leftMenu.component.html',
-  styleUrls: ['leftMenu.component.css']
+  templateUrl: './leftMenu.component.html',
+  styleUrls: ['./leftMenu.component.css']
 })
 export class LeftMenuComponent {
   @Input() categories: string[];
