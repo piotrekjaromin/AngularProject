@@ -8,11 +8,11 @@ import {Product} from '../../data/product';
 })
 export class CartComponent {
   @Input() cartProducts: Map<Product, number> = new Map<Product, number>();
-  @Output() showCart = new EventEmitter<boolean>();
+  @Output() view = new EventEmitter<string>();
   @Output() productToRemove = new EventEmitter<Product>();
 
-  showCartProducts(): void {
-    this.showCart.emit(true);
+  changeView(view: string): void {
+    this.view.emit(view);
   }
 
   removeProduct(product: Product) {

@@ -8,9 +8,9 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class TopNavComponent {
   @Input() numberOfProduct = 0;
   @Input() price = 0;
-  @Output() showCart = new EventEmitter<boolean>();
+  @Output() view = new EventEmitter<string>();
 
-  showCartProducts(): void {
-    this.showCart.emit(true);
+  changeView(view: string): void {
+    this.view.emit(view);
   }
 }

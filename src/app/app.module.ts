@@ -9,6 +9,7 @@ import {ListOfProductsComponent} from './components/productsContent/listOfProduc
 import {TopNavComponent} from './components/topNav/topNav.component';
 import {CartService} from './services/cart.service';
 import {CartComponent} from './components/cart/cart.component';
+import {EndFormComponent} from "./components/endForm/endForm.component";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import {CartComponent} from './components/cart/cart.component';
     LeftMenuComponent,
     ListOfProductsComponent,
     TopNavComponent,
-    CartComponent
+    CartComponent,
+    EndFormComponent
   ],
   imports: [
     BrowserModule,

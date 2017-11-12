@@ -2,10 +2,10 @@
   <top-nav
     [numberOfProduct]="cartNumberOfProducts"
     [price]="cartPrice"
-  (showCart)="switchView()">
+  (view)="changeView($event)">
   </top-nav>
 </nav>
-<div class="row" *ngIf="! showCart">
+<div class="row" *ngIf="view === 'main'">
   <div class="col-sm-2">
     <left-menu
       [categories]="categories"
@@ -14,15 +14,16 @@
   </div>
   <div class="col-sm-10">
     <list-of-products
-      [products]="getProductWithCategory(selectedCategories)"
+      [products]="getProducts(selectedCategories, currentPage)"
       [numberOfPages]="numberOfPages"
       (currentPageEmitter)="changePage($event)"
       (addedProduct)="addToCard($event)">
     </list-of-products>
   </div>
 </div>
-<cart *ngIf="showCart"
+<cart *ngIf="view === 'cart'"
       [cartProducts]="getCartProducts()"
-      (showCart)="switchView()"
+      (view)="changeView($event)"
 (productToRemove)="removeProductFromCard($event)">
 </cart>
+<end-form *ngIf="view=== 'endForm'"></end-form>

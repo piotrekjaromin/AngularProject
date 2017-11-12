@@ -16,13 +16,18 @@ export class AppComponent implements OnInit {
   numberOfPages = 1;
   cartNumberOfProducts = 0;
   cartPrice = 0;
-  showCart = false;
+  view = 'main';
 
   constructor(private productService: ProductService, private cartService: CartService) {
   }
 
-  getProducts(categories: string[], currentPage: number): void {
+  getProducts(categories: string[], currentPage: number): Product[] {
+    if (categories.length === 0) {
+      categories = this.categories;
+      this.getNumberOfPages(categories);
+    }
     this.products = this.productService.getProducts(categories, currentPage);
+    return this.products;
   }
 
   getCategories(): void {
@@ -46,18 +51,14 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCategories();
-    this.getProducts(this.categories, this.currentPage);
     this.getNumberOfPages(this.categories);
+    this.getProducts(this.categories, this.currentPage);
   }
 
   changeSelectedCategory(categories: string[]): void {
     this.selectedCategories = categories;
     this.getProducts(this.selectedCategories, this.currentPage);
     this.getNumberOfPages(categories);
-  }
-
-  getProductWithCategory(categories: string[]): Product[] {
-    return this.products.filter(product => categories.indexOf(product.category) > -1);
   }
 
   changePage(page: number) {
@@ -77,8 +78,8 @@ export class AppComponent implements OnInit {
     this.cartPrice -= product.price;
   }
 
-  switchView() {
-    this.showCart = !this.showCart;
+  changeView(view: string) {
+    this.view = view;
   }
 }
 
