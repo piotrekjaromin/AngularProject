@@ -1,28 +1,58 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../data/product';
-import {cartProducts} from '../data/cartProductsList';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Order} from '../data/order';
+import {Http, RequestOptions} from '@angular/http';
 
 @Injectable()
 export class CartService {
 
-  getCartProduct(): Map<Product, number> {
-    return cartProducts;
+  constructor(private http: Http) { }
+
+  saveOrderHttp = 'http://localhost:5500/orders';
+
+  private cartPriceSource: BehaviorSubject<number> = new BehaviorSubject(0);
+  cartPrice = this.cartPriceSource.asObservable();
+
+  private cartProductSource: BehaviorSubject<Product[]> = new BehaviorSubject([]);
+  cartProduct = this.cartProductSource.asObservable();
+  //
+  private numberOfProductSource: BehaviorSubject<number> = new BehaviorSubject(0);
+  numberOfProduct = this.numberOfProductSource.asObservable();
+
+  saveOrder(fullName: string, address: string, products: Product[]) {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions(headers);
+    var order = new Order(fullName, address, products);
+    console.log('order: ' + JSON.stringify(order));
+    this.http.post(this.saveOrderHttp, order, options).subscribe();
+    return;
   }
 
+  addProductToCart(product: Product) {
+    var currentProducts = [];
+    this.cartProduct.subscribe(products => currentProducts = products);
+    currentProducts.push(product);
+    this.cartProductSource.next(currentProducts);
+    this.numberOfProductSource.next(currentProducts.length);
 
-  addProductToCard(product: Product): void {
-    if (cartProducts.has(product)) {
-      cartProducts.set(product, cartProducts.get(product) + 1);
-    } else {
-      cartProducts.set(product, 1);
-    }
+    var currentPrice = 0;
+    this.cartPrice.subscribe(price => currentPrice = price);
+    this.cartPriceSource.next(currentPrice + product.price);
   }
 
   removeProductFromCard(product: Product): void {
-    if (cartProducts.get(product) > 1) {
-      cartProducts.set(product, cartProducts.get(product) - 1);
-    } else {
-      cartProducts.delete(product);
+
+    var currentProducts = [];
+    this.cartProduct.subscribe(products => currentProducts = products);
+    var index = currentProducts.indexOf(product);
+    if(index > -1 ) {
+      currentProducts.splice(index, 1);
     }
+    this.cartProductSource.next(currentProducts);
+    this.numberOfProductSource.next(currentProducts.length);
+    var currentPrice = 0;
+    this.cartPrice.subscribe(price => currentPrice = price);
+    this.cartPriceSource.next(currentPrice - product.price);
   }
 }

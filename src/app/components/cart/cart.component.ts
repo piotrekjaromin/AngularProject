@@ -1,22 +1,25 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Product} from '../../data/product';
+import {CartService} from '../../services/cart.service';
 
 @Component({
   selector: 'cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartComponent {
-  @Input() cartProducts: Map<Product, number> = new Map<Product, number>();
-  @Output() view = new EventEmitter<string>();
-  @Output() productToRemove = new EventEmitter<Product>();
+export class CartComponent implements OnInit {
+   cartProducts: Product[];
 
-  changeView(view: string): void {
-    this.view.emit(view);
+  constructor(private cartService: CartService) {
+  }
+
+  ngOnInit(): void {
+    this.cartService.cartProduct.subscribe(products => this.cartProducts = products);
   }
 
   removeProduct(product: Product) {
-    this.productToRemove.emit(product);
+    this.cartService.removeProductFromCard(product);
   }
+
 }
 

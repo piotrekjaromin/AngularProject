@@ -9,7 +9,10 @@ import {ListOfProductsComponent} from './components/productsContent/listOfProduc
 import {TopNavComponent} from './components/topNav/topNav.component';
 import {CartService} from './services/cart.service';
 import {CartComponent} from './components/cart/cart.component';
-import {EndFormComponent} from "./components/endForm/endForm.component";
+import {EndFormComponent} from './components/endForm/endForm.component';
+import {DashboardComponent} from './components/dashboard/dashboard.component';
+import {AppRoutingModule} from './app-routing.module';
+import {HttpModule} from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -18,11 +21,14 @@ import {EndFormComponent} from "./components/endForm/endForm.component";
     ListOfProductsComponent,
     TopNavComponent,
     CartComponent,
-    EndFormComponent
+    EndFormComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule,
+    HttpModule
   ],
   providers: [ProductService, CartService],
   bootstrap: [AppComponent]

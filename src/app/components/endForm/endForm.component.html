@@ -3,12 +3,12 @@
   <div class="form-group">
     <label for="nameAndSurname">Name and surname</label>
     <input type="email" class="form-control" id="nameAndSurname" aria-describedby="emailHelp"
-           placeholder="Name and surname" required="required">
+           placeholder="Name and surname" required="required" ([ngModel])="fullName">
   </div>
   <h1>Address</h1>
   <div class="form-group">
     <label for="address">Address</label>
-    <input type="text" class="form-control" id="address" placeholder="Address" required="required">
+    <input type="text" class="form-control" id="address" placeholder="Address" required="required" ([ngModel])="address">
   </div>
-  <button class="btn">Finish order</button>
+  <button class="btn" (click)="saveOrder()">Finish order</button>
 </form>

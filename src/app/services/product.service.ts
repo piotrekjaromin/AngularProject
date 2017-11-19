@@ -1,28 +1,44 @@
 import { Injectable } from '@angular/core';
-import { Product } from '../data/product';
 import { PRODUCTS } from '../data/productsList';
+import 'rxjs/add/operator/map';
+import {Http, Response} from '@angular/http';
 
 @Injectable()
 export class ProductService {
+  getProductHttp = 'http://localhost:5500/products';
+  constructor(private http: Http) { }
 
-  getProducts(categories: String[], page: number): Product[] {
-    return PRODUCTS.filter(product => categories.indexOf(product.category) > -1).slice(3 * page - 3, 3 * page);
+  getProducts(categories: string[], page: number) {
+    return this.http
+      .get(this.createQueryGetProductByCategory(categories, page))
+      .map((response: Response) => response.json());
   }
 
-  getCategories(): string[] {
-    return this.removeDuplicate(PRODUCTS.map(product => product.category));
+  getCategories() {
+    return this.
+    http.get(this.getProductHttp).map((response: Response) => response.json());
   }
 
-  getProductsNumber(categories: String[]): number {
-    return PRODUCTS.filter(product => categories.indexOf(product.category) > -1).length;
+  getProductsNumber(categories: string[]) {
+    return this.http
+      .get(this.createQueryGetProductByCategoryNoPage(categories))
+      .map((response: Response) => response.json());
   }
 
-  private removeDuplicate(categories: string[]): string[] {
-    const result: string[] = [];
-    for (const category of categories) {
-      if (result.indexOf(category) === -1) {
-        result.push(category);
-      }
+  public createQueryGetProductByCategory(categories: string[], page: number) {
+    var result = this.getProductHttp;
+    if (categories.length > 0) {
+      result += '?{"category":{"$in":["' + categories.join('","') + '"]},"$skip":' + (3 * page - 3) + ',"$limit":3}';
+    } else {
+      result += '?{"$skip":' + (3 * page - 3) + ',"$limit":3}';
+    }
+    return result;
+  }
+
+  public createQueryGetProductByCategoryNoPage(categories: string[]) {
+    var result = this.getProductHttp;
+    if (categories.length > 0) {
+      result += '?{"category":{"$in":["' + categories.join('","') + '"]}}';
     }
     return result;
   }

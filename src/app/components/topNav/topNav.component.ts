@@ -1,16 +1,20 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {CartService} from '../../services/cart.service';
 
 @Component({
   selector: 'top-nav',
   templateUrl: './topNav.component.html',
   styleUrls: ['./topNav.component.css']
 })
-export class TopNavComponent {
-  @Input() numberOfProduct = 0;
-  @Input() price = 0;
-  @Output() view = new EventEmitter<string>();
+export class TopNavComponent implements OnInit {
+  numberOfProduct = 0;
+  price = 0;
 
-  changeView(view: string): void {
-    this.view.emit(view);
+  constructor(private cartService: CartService) {
+  }
+
+  ngOnInit(): void {
+    this.cartService.numberOfProduct.subscribe(number => this.numberOfProduct = number);
+    this.cartService.cartPrice.subscribe(price => this.price = price);
   }
 }

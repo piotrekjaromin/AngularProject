@@ -12,16 +12,16 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let product of cartProducts.keys()">
-    <td>{{cartProducts.get(product)}}</td>
+  <tr *ngFor="let product of cartProducts">
+    <td>1</td>
     <td>{{product.name}}</td>
     <td>{{product.price}}</td>
-    <td>{{product.price * cartProducts.get(product)}}</td>
+    <td>{{product.price}}</td>
     <td><button class="btn" (click)="removeProduct(product)">Remove</button></td>
   </tr>
   </tbody>
 
 </table>
 
-<button class="btn" (click)="changeView('main')">Continue shopping</button>
-<button class="btn" (click)="changeView('endForm')">Finalize</button>
+<button class="btn" routerLink="/dashboard">Continue shopping</button>
+<button class="btn" routerLink="/end_form">Finalize</button>

@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="col-sm-2">
+    <left-menu (selectedCategories)="changeSelectedCategory($event)"></left-menu>
+  </div>
+  <div class="col-sm-10">
+    <list-of-products [selectedCategories]="selectedCategories">
+    </list-of-products>
+  </div>
+</div>
