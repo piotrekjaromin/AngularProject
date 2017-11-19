@@ -8,12 +8,7 @@ import {CartService} from '../../services/cart.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-  constructor(private productService: ProductService, private cartService: CartService) {
-  }
-
-  ngOnInit(): void {
-  }
 }
 

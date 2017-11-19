@@ -8,25 +8,23 @@ import {CartService} from '../../services/cart.service';
   templateUrl: './listOfProducts.component.html',
   styleUrls: ['./listOfProducts.component.css']
 })
-export class ListOfProductsComponent implements OnInit, OnChanges {
+export class ListOfProductsComponent implements OnInit{
   products: Product[];
-  currentPage = 1;
-  numberOfPages: number;
+  @Input() currentPage = 1;
+  @Input() numberOfPages: number;
   @Input() selectedCategories: string[];
 
   constructor(private productService: ProductService, private cartService: CartService) {
   }
 
-  getProducts(categories: string[], currentPage: number){
+  getProducts(categories: string[], currentPage: number) {
     if (categories.length === 0) {
       this.productService.getCategories().subscribe(data => categories = data.map(d => d.category));
-      this.getNumberOfPages(categories);
     }
     this.productService.getProducts(categories, currentPage).subscribe(data => this.products = data);
   }
 
   previousPage(): void {
-    this.getNumberOfPages(this.selectedCategories);
     if (this.currentPage > 1 ) {
       this.currentPage--;
     }
@@ -34,19 +32,11 @@ export class ListOfProductsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.getNumberOfPages(this.selectedCategories);
     this.getProducts([], 1);
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log('categories: ' + this.selectedCategories);
-    this.currentPage = 1;
-    this.getNumberOfPages(this.selectedCategories);
-    this.getProducts(this.selectedCategories, this.currentPage);
+    this.getNumberOfPages([]);
   }
 
   nextPage(): void {
-    this.getNumberOfPages(this.selectedCategories);
     if (this.currentPage < this.numberOfPages) {
       this.currentPage++;
     }

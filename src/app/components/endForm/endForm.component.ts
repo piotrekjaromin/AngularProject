@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Product} from '../../data/product';
 import {CartService} from '../../services/cart.service';
 
@@ -11,8 +11,8 @@ export class EndFormComponent implements OnInit {
 
   cartProducts: Product[];
 
-  fullName = 'fghdfgh';
-  address = 'asdfasdf';
+  fullName = '';
+  address = '';
 
   constructor(private cartService: CartService) {
   }
@@ -25,6 +25,15 @@ export class EndFormComponent implements OnInit {
     console.log('fullName: ' + this.fullName);
     console.log('address: ' + this.address);
     this.cartService.saveOrder(this.fullName, this.address, this.cartProducts);
+
+  }
+
+  insertFullname(event: any) {
+    this.fullName = event.target.value;
+  }
+
+  insertAddress(event: any) {
+    this.address = event.target.value;
   }
 }
 

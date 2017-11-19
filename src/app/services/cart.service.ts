@@ -26,6 +26,9 @@ export class CartService {
     var order = new Order(fullName, address, products);
     console.log('order: ' + JSON.stringify(order));
     this.http.post(this.saveOrderHttp, order, options).subscribe();
+    this.cartPriceSource.next(0);
+    this.cartProductSource.next([]);
+    this.numberOfProductSource.next(0);
     return;
   }
 

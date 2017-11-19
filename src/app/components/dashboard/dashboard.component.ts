@@ -1,27 +1,31 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ProductService} from '../../services/product.service';
-import {CartService} from '../../services/cart.service';
+import {Component} from '@angular/core';
+import {ProductService} from "../../services/product.service";
 
 @Component({
   selector: 'dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: []
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
   selectedCategories: string[] = [];
-
-
-  constructor(private productService: ProductService, private cartService: CartService) {
-  }
-
-  ngOnInit(): void {
-
-  }
+  numberOfPages: number;
 
   changeSelectedCategory(categories: string[]): void {
     this.selectedCategories = categories;
-    console.log(categories);
-    this.productService.createQueryGetProductByCategory(categories, 3);
+    this.getNumberOfPages(categories);
+  }
+
+  constructor(private productService: ProductService) {
+  }
+
+  getNumberOfPages(categories: string[]) {
+    this.productService.getProductsNumber(categories)
+      .subscribe(numberOfPages => {
+        this.numberOfPages = Math.ceil(numberOfPages.length / 3);
+        if (this.numberOfPages < 1) {
+          this.numberOfPages = 1;
+        }
+      });
   }
 }
 
