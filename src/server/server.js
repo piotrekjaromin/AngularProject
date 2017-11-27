@@ -7,6 +7,8 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json()); // parse application/
 
 
+// app.use(cors());
+
 mongoose.connect('mongodb://localhost/sportShop');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'błąd połączenia...'));
@@ -32,11 +34,14 @@ app.get('/', function (req, res) {
   res.end("Witam Was serdecznie na mojej stronie :)");
 });
 
-app.get('/products', function (req, res) {
+app.get('/products/:currentPage', function (req, res) {
   var Product = mongoose.model('Product');
-  var currentPage = req.body.currentPage;
+  var currentPage = req.params.currentPage;
   var skip = 3 * currentPage - 3;
   var limit = 3;
+  console.log(req.params.currentPage);
+  // console.log(req.body.currentPage);
+  // console.log(req);
   Product
     .find()
     .skip(skip)
@@ -47,7 +52,7 @@ app.get('/products', function (req, res) {
 });
 
 
-app.get('/allProducts', function (req, res) {
+app.get('/products', function (req, res) {
   var Product = mongoose.model('Product');
   Product
     .find()
@@ -56,7 +61,7 @@ app.get('/allProducts', function (req, res) {
     });
 });
 
-app.post('/addProduct', function (req, res) {
+app.post('/product', function (req, res) {
 
   var Product = mongoose.model('Product');
   var product = new Product();
@@ -80,18 +85,24 @@ app.get('/categories', function (req, res) {
   });
 });
 
-app.post('/modifyProduct', function (req, res) {
+app.put('/product', function (req, res) {
 
   var Product = mongoose.model('Product');
-  var product = new Product;
-  product.name = req.body.name;
-  product.description = req.body.description;
-  product.category = req.body.category;
-  product.price= req.body.price;
 
-  Product.findByIdAndUpdate(req.body.id, product, {new: true}, function(err, model) {
-      console.log("updated");
-    });
+  Product.findById(req.body.id, function (err, product) {
+    if (err) throw err;
+    product.name = req.body.name;
+    product.description = req.body.description;
+    product.category = req.body.category;
+    product.price = req.body.price;
+
+
+    product.save(function (err) {
+      if (err) throw err;
+      console.log('updated product.');
+    })
+  });
+
 
   res.send("Ok", 200);
   res.end();
