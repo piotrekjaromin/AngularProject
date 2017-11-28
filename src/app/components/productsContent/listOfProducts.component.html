@@ -8,8 +8,8 @@
 </div>
 
 <div class="btn-group" id="pagination">
-  <button class="btn" (click)="previousPage()"><</button>
+  <button class="btn" (click)="changePage(-1)"><</button>
   <button class="btn btn-light" disabled>{{currentPage}} / {{numberOfPages}}</button>
-  <button class="btn" (click)="nextPage()">></button>
+  <button class="btn" (click)="changePage(1)">></button>
 </div>
 

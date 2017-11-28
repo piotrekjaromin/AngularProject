@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ProductService} from '../../services/product.service';
+import {isUndefined} from "util";
 
 @Component({
   selector: 'left-menu',
@@ -10,6 +11,9 @@ export class LeftMenuComponent implements OnInit{
   categories: string[];
   selected: string[] = [];
   @Output() selectedCategories = new EventEmitter<string[]>();
+  priceFrom = -1;
+  priceTo = -1;
+  @Output() priceFilter = new EventEmitter<number>();
 
   constructor(private productService: ProductService) {
   }
@@ -25,17 +29,7 @@ export class LeftMenuComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.productService.getCategories().subscribe(data => this.categories = this.removeDuplicate(data.map(d => d.category)));
-  }
-
-  private removeDuplicate(categories: string[]): string[] {
-    const result: string[] = [];
-    for (const category of categories) {
-      if (result.indexOf(category) === -1) {
-        result.push(category);
-      }
-    }
-    return result;
+    this.productService.getCategories().subscribe(data => this.categories = data);
   }
 }
 

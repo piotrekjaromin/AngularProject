@@ -18,7 +18,7 @@ export class EndFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cartService.cartProduct.subscribe(products => this.cartProducts = products);
+    //this.cartService.cartProduct.subscribe(products => this.cartProducts = products);
   }
 
   saveOrder() {

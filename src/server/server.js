@@ -2,12 +2,13 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var app = express();
+var cors = require('cors')
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json()); // parse application/
 
 
-// app.use(cors());
+app.use(cors());
 
 mongoose.connect('mongodb://localhost/sportShop');
 var db = mongoose.connection;
@@ -20,6 +21,7 @@ db.once('open', function () {
 // ... schemat i model
 var Schema = mongoose.Schema;
 var Products = new Schema({
+  _id: String,
   name: String,
   description: String,
   category: String,
@@ -34,16 +36,19 @@ app.get('/', function (req, res) {
   res.end("Witam Was serdecznie na mojej stronie :)");
 });
 
-app.get('/products/:currentPage', function (req, res) {
+app.get('/products', function (req, res) {
   var Product = mongoose.model('Product');
-  var currentPage = req.params.currentPage;
+  var currentPage = req.query.currentPage;
+  var categories = req.query.categories;
+  console.log(categories)
+  var categories = JSON.parse('["' + categories.replace(",", "\",\"") + '"]');
+  console.log(categories)
   var skip = 3 * currentPage - 3;
   var limit = 3;
-  console.log(req.params.currentPage);
-  // console.log(req.body.currentPage);
-  // console.log(req);
+  console.log('current page: ' +currentPage);
+
   Product
-    .find()
+    .find({category: { $in: categories}})
     .skip(skip)
     .limit(limit)
     .exec(function (err, products) {
@@ -52,14 +57,34 @@ app.get('/products/:currentPage', function (req, res) {
 });
 
 
-app.get('/products', function (req, res) {
+app.get('/productsNumber', function (req, res) {
   var Product = mongoose.model('Product');
-  Product
-    .find()
-    .exec(function (err, products) {
-      res.status(200).send(products).end();
-    });
+  var categories = req.query.categories;
+  categories = (categories.length == 0) ? [] : JSON.parse('["' + categories.replace(",", "\",\"") + '"]');
+
+
+  if(categories.length != 0) {
+    Product
+      .find({category: { $in: categories}})
+      .count({}, function (err, count) {
+        res.status(200).send(JSON.stringify(count)).end();
+      });
+  } else {
+    Product
+      .find({})
+      .count({}, function (err, count) {
+        res.status(200).send(JSON.stringify(count)).end();
+    })
+  }
 });
+
+app.get('/getProduct', function (req, res) {
+  var Product = mongoose.model('Product');
+  Product.findById(req.query.id, function (err, product) {
+    res.status(200).send(product).end();
+  } );
+
+})
 
 app.post('/product', function (req, res) {
 

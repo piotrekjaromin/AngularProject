@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
-import { PRODUCTS } from '../data/productsList';
 import 'rxjs/add/operator/map';
 import {Http, Response} from '@angular/http';
 
 @Injectable()
 export class ProductService {
-  getProductHttp = 'http://localhost:5500/products';
+  getProductHttp = 'http://localhost:5000';
   constructor(private http: Http) { }
 
   getProducts(categories: string[], page: number) {
     return this.http
-      .get(this.createQueryGetProductByCategory(categories, page))
+      .get(this.getProductHttp + '/products?currentPage=' + page + '&categories=' + categories)
+      .map((response: Response) => response.json());
+  }
+
+  getProduct(id: string) {
+    return this.http
+      .get(this.getProductHttp + '/getProduct?id=' + id)
       .map((response: Response) => response.json());
   }
 
   getCategories() {
     return this.
-    http.get(this.getProductHttp).map((response: Response) => response.json());
+    http.get(this.getProductHttp + '/categories').map((response: Response) => response.json());
   }
 
   getProductsNumber(categories: string[]) {
     return this.http
-      .get(this.createQueryGetProductByCategoryNoPage(categories))
-      .map((response: Response) => response.json());
+      .get(this.getProductHttp + '/productsNumber?categories=' + categories)
+      .map((response: Response) => response);
   }
 
   public createQueryGetProductByCategory(categories: string[], page: number) {
