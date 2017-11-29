@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ProductService} from '../../services/product.service';
-import {isUndefined} from "util";
+import {isNumber, isUndefined} from "util";
+import {isDefined} from "@angular/compiler/src/util";
 
 @Component({
   selector: 'left-menu',
@@ -11,9 +12,12 @@ export class LeftMenuComponent implements OnInit{
   categories: string[];
   selected: string[] = [];
   @Output() selectedCategories = new EventEmitter<string[]>();
-  priceFrom = -1;
-  priceTo = -1;
-  @Output() priceFilter = new EventEmitter<number>();
+  priceFrom: number;
+  priceTo: number;
+  @Output() priceFromEmiter = new EventEmitter<number>();
+  @Output() priceToEmiter = new EventEmitter<number>();
+  name: string;
+  @Output() nameEmiter = new EventEmitter<string>();
 
   constructor(private productService: ProductService) {
   }
@@ -30,6 +34,25 @@ export class LeftMenuComponent implements OnInit{
 
   ngOnInit() {
     this.productService.getCategories().subscribe(data => this.categories = data);
+  }
+
+  onBlurFrom() {
+    if(isNumber(this.priceFrom)) {
+      this.priceFromEmiter.emit(this.priceFrom);
+    } else {
+      this.priceFromEmiter.emit(-1);
+    }
+  }
+
+  onBlurTo() {
+    if(isNumber(this.priceTo)) {
+      this.priceToEmiter.emit(this.priceTo);
+    } else {
+      this.priceToEmiter.emit(99999999);
+    }
+  }
+  onBlurName() {
+    this.nameEmiter.emit(this.name);
   }
 }
 

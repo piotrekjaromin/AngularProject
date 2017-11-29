@@ -10,26 +10,14 @@ app.use(bodyParser.json()); // parse application/
 
 app.use(cors());
 
-mongoose.connect('mongodb://localhost/sportShop');
+mongoose.connect('mongodb://piotrekjaromin:password@ds042677.mlab.com:42677/mean_project');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'błąd połączenia...'));
 db.once('open', function () {
   console.log('Connection to db ok');
 });
 
-
-// ... schemat i model
-var Schema = mongoose.Schema;
-var Products = new Schema({
-  _id: String,
-  name: String,
-  description: String,
-  category: String,
-  price: Number
-});
-
-mongoose.model("Product", Products);
-
+var Product = require('./models/product')
 
 // ... obsługa API
 app.get('/', function (req, res) {
@@ -37,45 +25,45 @@ app.get('/', function (req, res) {
 });
 
 app.get('/products', function (req, res) {
-  var Product = mongoose.model('Product');
+
   var currentPage = req.query.currentPage;
   var categories = req.query.categories;
-  console.log(categories)
-  var categories = JSON.parse('["' + categories.replace(",", "\",\"") + '"]');
-  console.log(categories)
-  var skip = 3 * currentPage - 3;
-  var limit = 3;
-  console.log('current page: ' +currentPage);
+  categories = (categories.length == 0) ? [] : JSON.parse('["' + categories.replace(",", "\",\"") + '"]');
+  var priceFrom = req.query.priceFrom;
+  var priceTo = req.query.priceTo;
+  var name = req.query.productName;
 
-  Product
-    .find({category: { $in: categories}})
-    .skip(skip)
-    .limit(limit)
+  var query = categories.length != 0 ?
+    Product.find({category: {$in: categories}, price: {$gte: priceFrom, $lte: priceTo}, name: {$regex: ".*" + name + ".*"}}) :
+    Product.find({price: {$gte: priceFrom, $lte: priceTo}, name: {$regex: ".*" + name + ".*"}});
+
+  query
+    .skip(3 * currentPage - 3)
+    .limit(3)
     .exec(function (err, products) {
-    res.status(200).send(products).end();
-  });
+      res.status(200).send(products).end();
+    });
+
 });
 
 
 app.get('/productsNumber', function (req, res) {
-  var Product = mongoose.model('Product');
   var categories = req.query.categories;
   categories = (categories.length == 0) ? [] : JSON.parse('["' + categories.replace(",", "\",\"") + '"]');
 
+  var priceFrom = req.query.priceFrom;
+  var priceTo = req.query.priceTo;
+  var name = req.query.productName;
 
-  if(categories.length != 0) {
-    Product
-      .find({category: { $in: categories}})
-      .count({}, function (err, count) {
-        res.status(200).send(JSON.stringify(count)).end();
-      });
-  } else {
-    Product
-      .find({})
-      .count({}, function (err, count) {
-        res.status(200).send(JSON.stringify(count)).end();
-    })
-  }
+  var query = categories.length != 0 ?
+    Product.find({category: {$in: categories}, price: {$gte: priceFrom, $lte: priceTo}, name: {$regex: ".*" + name + ".*"}}) :
+    Product.find({price: {$gte: priceFrom, $lte: priceTo}, name: {$regex: ".*" + name + ".*"}});
+
+
+  query.count({}, function (err, count) {
+    res.status(200).send(JSON.stringify(count)).end();
+  });
+
 });
 
 app.get('/getProduct', function (req, res) {
@@ -87,8 +75,6 @@ app.get('/getProduct', function (req, res) {
 })
 
 app.post('/product', function (req, res) {
-
-  var Product = mongoose.model('Product');
   var product = new Product();
   product.name = req.body.name;
   product.description = req.body.description;
@@ -104,15 +90,12 @@ app.post('/product', function (req, res) {
 });
 
 app.get('/categories', function (req, res) {
-  var Product = mongoose.model('Product');
   Product.find().distinct('category', function(error, categories) {
     res.status(200).send(categories).end();
   });
 });
 
 app.put('/product', function (req, res) {
-
-  var Product = mongoose.model('Product');
 
   Product.findById(req.body.id, function (err, product) {
     if (err) throw err;

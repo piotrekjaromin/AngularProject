@@ -19,7 +19,7 @@ export class CartService {
 
   private cartProductSource: BehaviorSubject<CartProduct[]> = new BehaviorSubject([]);
   cartProduct = this.cartProductSource.asObservable();
-  //
+
   private numberOfProductSource: BehaviorSubject<number> = new BehaviorSubject(0);
   numberOfProduct = this.numberOfProductSource.asObservable();
 
@@ -70,9 +70,9 @@ export class CartService {
   }
 
   removeProductFromCard(product: ProductFromDB): void {
-    var shopCart: CartProduct[] = JSON.parse(localStorage.getItem('shopCart'));
-    var cartPrice: number = parseInt(localStorage.getItem('cartPrice'), 10);
-    var cartNumber: number = parseInt(localStorage.getItem('cartNumber'), 10);
+    const shopCart: CartProduct[] = JSON.parse(localStorage.getItem('shopCart'));
+    const cartPrice: number = parseInt(localStorage.getItem('cartPrice'), 10);
+    const cartNumber: number = parseInt(localStorage.getItem('cartNumber'), 10);
 
     for (const i in shopCart) {
       if (shopCart[i].product._id === product._id) {
@@ -93,9 +93,9 @@ export class CartService {
   }
 
   removeOneProductFromCard(product: ProductFromDB): void {
-    var shopCart: CartProduct[] = JSON.parse(localStorage.getItem('shopCart'));
-    var cartPrice: number = parseInt(localStorage.getItem('cartPrice'), 10);
-    var cartNumber: number = parseInt(localStorage.getItem('cartNumber'), 10);
+    const shopCart: CartProduct[] = JSON.parse(localStorage.getItem('shopCart'));
+    const cartPrice: number = parseInt(localStorage.getItem('cartPrice'), 10);
+    const cartNumber: number = parseInt(localStorage.getItem('cartNumber'), 10);
 
     for (const i in shopCart) {
       if (shopCart[i].product._id === product._id) {

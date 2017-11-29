@@ -5,13 +5,20 @@
   </li>
 </ul>
 <br>
-<!--price:-->
-<!--<div class="form-group row">-->
-  <!--<div class="col-lg-6">-->
-    <!--<input type="number" class="form-control" placeholder="from" [(ngModel)]="priceFrom" (blur)="onBlur(1)">-->
-  <!--</div>-->
-  <!--<div class="col-lg-6">-->
-    <!--<input type="number" class="form-control" placeholder="to" [(ngModel)]="priceTo" (blur)="onBlur(-1)">-->
-  <!--</div>-->
-<!--</div>-->
 
+price:
+<div class="form-group row">
+  <div class="col-lg-6">
+    <input type="number" class="form-control" placeholder="from" [(ngModel)]="priceFrom" (blur)="onBlurFrom()">
+  </div>
+  <div class="col-lg-6">
+    <input type="number" class="form-control" placeholder="to" [(ngModel)]="priceTo" (blur)="onBlurTo()">
+  </div>
+</div>
+
+name
+<div class="form-group row">
+  <div class="col-lg-12">
+    <input type="text" class="form-control" placeholder="from" [(ngModel)]="name" (change)="onBlurName()">
+  </div>
+</div>

@@ -1,50 +1,35 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
 import {Http, Response} from '@angular/http';
 
 @Injectable()
 export class ProductService {
   getProductHttp = 'http://localhost:5000';
-  constructor(private http: Http) { }
 
-  getProducts(categories: string[], page: number) {
-    return this.http
-      .get(this.getProductHttp + '/products?currentPage=' + page + '&categories=' + categories)
-      .map((response: Response) => response.json());
+  constructor(private http: Http) {
   }
 
-  getProduct(id: string) {
+  getProducts(categories: string[], page: number, priceFrom: number, priceTo: number, productName: string) {
     return this.http
-      .get(this.getProductHttp + '/getProduct?id=' + id)
+      .get(this.getProductHttp +
+        '/products?currentPage=' + page +
+        '&categories=' + categories +
+        '&priceFrom=' + priceFrom +
+        '&priceTo=' + priceTo +
+        '&productName=' + productName)
       .map((response: Response) => response.json());
   }
 
   getCategories() {
-    return this.
-    http.get(this.getProductHttp + '/categories').map((response: Response) => response.json());
+    return this.http.get(this.getProductHttp + '/categories').map((response: Response) => response.json());
   }
 
-  getProductsNumber(categories: string[]) {
+  getProductsNumber(categories: string[], priceFrom: number, priceTo: number, productName: string) {
     return this.http
-      .get(this.getProductHttp + '/productsNumber?categories=' + categories)
+      .get(this.getProductHttp + '/productsNumber?categories=' + categories +
+        '&priceFrom=' + priceFrom +
+        '&priceTo=' + priceTo +
+        '&productName=' + productName)
       .map((response: Response) => response);
-  }
-
-  public createQueryGetProductByCategory(categories: string[], page: number) {
-    var result = this.getProductHttp;
-    if (categories.length > 0) {
-      result += '?{"category":{"$in":["' + categories.join('","') + '"]},"$skip":' + (3 * page - 3) + ',"$limit":3}';
-    } else {
-      result += '?{"$skip":' + (3 * page - 3) + ',"$limit":3}';
-    }
-    return result;
-  }
-
-  public createQueryGetProductByCategoryNoPage(categories: string[]) {
-    var result = this.getProductHttp;
-    if (categories.length > 0) {
-      result += '?{"category":{"$in":["' + categories.join('","') + '"]}}';
-    }
-    return result;
   }
 }

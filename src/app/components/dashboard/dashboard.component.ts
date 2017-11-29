@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProductService} from "../../services/product.service";
 import {Product} from "../../data/product";
 import {ProductFromDB} from "../../data/productFromDB";
+import {isUndefined} from "util";
 
 @Component({
   selector: 'dashboard',
@@ -13,37 +14,57 @@ export class DashboardComponent implements OnInit{
   numberOfPages: number;
   products: ProductFromDB[] = []
   currentPage = 1;
+  priceFrom: number;
+  priceTo: number;
+  productName: string;
 
-  filter(prices: number[]) {
-    console.log(prices[0]);
-    console.log(prices[1]);
+  getName(name: string) {
+    this.productName = name;
+    console.log(this.productName);
+    this.getNumberOfPages(this.selectedCategories, this.priceFrom, this.priceTo, this.productName);
+    this.getProducts(this.selectedCategories, 1, this.priceFrom, this.priceTo, this.productName);
+  }
+
+  getPriceFrom(price) {
+    this.priceFrom = price;
+    this.getNumberOfPages(this.selectedCategories, this.priceFrom, this.priceTo, this.productName);
+    this.getProducts(this.selectedCategories, 1, this.priceFrom, this.priceTo, this.productName);
+  }
+
+  getPriceTo(price) {
+    this.priceTo = price;
+    this.getNumberOfPages(this.selectedCategories, this.priceFrom, this.priceTo, this.productName);
+    this.getProducts(this.selectedCategories, 1, this.priceFrom, this.priceTo, this.productName);
   }
 
   changeSelectedCategory(categories: string[]): void {
     this.selectedCategories = categories;
-    this.getNumberOfPages(categories);
-    this.getProducts(this.selectedCategories, 1);
+    this.getNumberOfPages(categories, this.priceFrom, this.priceTo, this.productName);
+    this.getProducts(this.selectedCategories, 1, this.priceFrom, this.priceTo, this.productName);
     this.currentPage = 1;
   }
 
   pagination(page: number) {
     this.currentPage = this.currentPage + page;
-
-    if( this.currentPage > this.numberOfPages) this.currentPage = this.numberOfPages
-    if(this.currentPage < 1) this.currentPage = 1;
-    this.getProducts(this.selectedCategories, this.currentPage);
+    if (this.currentPage > this.numberOfPages) this.currentPage = this.numberOfPages;
+    if (this.currentPage < 1) this.currentPage = 1;
+    this.getProducts(this.selectedCategories, this.currentPage, this.priceFrom, this.priceTo, this.productName);
   }
 
   constructor(private productService: ProductService) {
   }
 
   ngOnInit() {
-    this.getProducts(this.selectedCategories, 1);
-    this.getNumberOfPages([]);
+    this.priceFrom = -1;
+    this.priceTo = 9999999;
+    this.productName = '';
+    this.getProducts(this.selectedCategories, 1, this.priceFrom, this.priceTo, this.productName);
+    this.getNumberOfPages(this.selectedCategories, this.priceFrom, this.priceTo, this.productName);
   }
 
-  getNumberOfPages(categories: string[]) {
-    this.productService.getProductsNumber(categories)
+
+  getNumberOfPages(categories: string[], priceFrom: number, priceTo: number, productName: string) {
+    this.productService.getProductsNumber(categories, priceFrom, priceTo, productName)
       .subscribe(numberOfPages => {
         this.numberOfPages = Math.ceil(numberOfPages['_body'] / 3);
         if (this.numberOfPages < 1) {
@@ -52,20 +73,9 @@ export class DashboardComponent implements OnInit{
       });
   }
 
-  getProducts(categories: string[], currentPage: number) {
-    if (categories.length === 0) {
-      this.productService.getCategories().subscribe(data => {
-        categories = data;
-        this.productService.getProducts(categories, currentPage).subscribe(products => {
-          this.products = products;
-        });
-      });
-    } else {
-      this.productService.getProducts(categories, currentPage).subscribe(products => {
-        this.products = products;
-      });
-    }
-
+  getProducts(categories: string[], currentPage: number, priceFrom: number, priceTo: number, productName: string) {
+    this.productService.getProducts(categories, currentPage, priceFrom, priceTo, productName).subscribe(products =>
+      this.products = products);
   }
 }
 
