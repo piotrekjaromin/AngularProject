@@ -4,7 +4,7 @@ import {Http, Response} from '@angular/http';
 
 @Injectable()
 export class ProductService {
-  getProductHttp = 'http://localhost:5000';
+  getProductHttp = 'http://localhost:5000/products';
 
   constructor(private http: Http) {
   }
@@ -12,11 +12,11 @@ export class ProductService {
   getProducts(categories: string[], page: number, priceFrom: number, priceTo: number, productName: string) {
     return this.http
       .get(this.getProductHttp +
-        '/products?currentPage=' + page +
-        '&categories=' + categories +
-        '&priceFrom=' + priceFrom +
-        '&priceTo=' + priceTo +
-        '&productName=' + productName)
+        '/name/' + productName +
+        '/categories/' + categories +
+        '/page/' + page +
+        '/pricefrom/' + priceFrom +
+        '/priceTo/' + priceTo)
       .map((response: Response) => response.json());
   }
 
@@ -26,10 +26,12 @@ export class ProductService {
 
   getProductsNumber(categories: string[], priceFrom: number, priceTo: number, productName: string) {
     return this.http
-      .get(this.getProductHttp + '/productsNumber?categories=' + categories +
-        '&priceFrom=' + priceFrom +
-        '&priceTo=' + priceTo +
-        '&productName=' + productName)
+      .get(this.getProductHttp +
+        '/name/' + productName +
+        '/categories/' + categories +
+        '/pricefrom/' + priceFrom +
+        '/priceTo/' + priceTo +
+        '/quantity')
       .map((response: Response) => response);
   }
 }

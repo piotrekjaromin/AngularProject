@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ProductService} from '../../services/product.service';
-import {isNumber, isUndefined} from "util";
-import {isDefined} from "@angular/compiler/src/util";
+import {isNumber} from 'util';
 
 @Component({
   selector: 'left-menu',
@@ -29,6 +28,9 @@ export class LeftMenuComponent implements OnInit{
     } else {
       this.selected.push(category);
     }
+
+    (this.selected.length === 0) ?
+    this.selectedCategories.emit(this.categories) :
     this.selectedCategories.emit(this.selected);
   }
 
@@ -52,7 +54,9 @@ export class LeftMenuComponent implements OnInit{
     }
   }
   onBlurName() {
-    this.nameEmiter.emit(this.name);
+    (name === '') ?
+      this.nameEmiter.emit(' ') :
+      this.nameEmiter.emit(this.name);
   }
 }
 

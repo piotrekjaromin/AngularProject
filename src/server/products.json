@@ -2,176 +2,151 @@
   {
     "name": "product 1",
     "description": "description 1",
-    "price": 1.11,
-    "category": "category1",
-    "id": "2ae4e1a33f6048e5"
+    "price":200.10,
+    "category": "category1"
   },
   {
     "name": "product 2",
     "description": "description 2",
-    "price": 2.22,
-    "category": "category1",
-    "id": "b6182916f973bb9d"
+    "price": 250.25,
+    "category": "category1"
   },
   {
     "name": "product 3",
     "description": "description 3",
-    "price": 3.33,
-    "category": "category1",
-    "id": "ecd2230be3b7a8ca"
+    "price": 400.25,
+    "category": "category1"
   },
   {
     "name": "product 4",
     "description": "description 4",
-    "price": 4.44,
-    "category": "category1",
-    "id": "a07d4923dded6827"
+    "price": 500.30,
+    "category": "category1"
   },
   {
     "name": "product 5",
     "description": "description 5",
-    "price": 5.55,
-    "category": "category1",
-    "id": "0747944eadc199d6"
+    "price": 550.75,
+    "category": "category1"
   },
   {
     "name": "product 6",
     "description": "description 6",
-    "price": 6.66,
-    "category": "category1",
-    "id": "5571ab2bb40ac9a5"
+    "price": 600.80,
+    "category": "category1"
   },
   {
     "name": "product  7",
     "description": "description 7",
     "category": "category2",
-    "price": 7.77,
-    "id": "3ade67e02b0759ef"
+    "price": 650.80
   },
   {
     "name": "product 8",
     "description": "description 8",
     "category": "category2",
-    "price": 8.88,
-    "id": "fab894f5f1e8f86c"
+    "price": 700.75
   },
   {
     "name": "product 9",
     "description": "description 9",
     "category": "category2",
-    "price": 9.99,
-    "id": "77e3e746d25bea75"
+    "price": 750.75
   },
   {
     "name": "product 10",
     "description": "description  10",
     "category": "category2",
-    "price": 10.1,
-    "id": "a89308177b6fd94b"
+    "price": 800.80
   },
   {
     "name": "product 11",
     "description": "description 11",
     "category": "category3",
-    "price": 11.11,
-    "id": "4aa379d6de6d58fd"
+    "price": 850.60
   },
   {
     "name": "product 12",
     "description": "description 12",
     "category": "category3",
-    "price": 11.12,
-    "id": "76e0a1d20c8ea853"
+    "price": 900.60
   },
   {
     "name": "product 13",
     "description": "description 13",
     "category": "category3",
-    "price": 11.13,
-    "id": "f3dfe4336a87187a"
+    "price": 950.40
   },
   {
     "name": "product 14",
     "description": "description 14",
     "category": "category3",
-    "price": 11.14,
-    "id": "684ef1472b1bab9d"
+    "price": 1000.40
   },
   {
     "name": "product 15",
     "description": "description 15",
     "category": "category3",
-    "price": 11.15,
-    "id": "9895822a37dbaaad"
+    "price": 1050.60
   },
   {
     "name": "product 16",
     "description": "description 16",
     "category": "category3",
-    "price": 11.16,
-    "id": "ce00714731af68ce"
+    "price": 1100.40
   },
   {
     "name": "product 17",
     "description": "description 17",
     "category": "category4",
-    "price": 11.17,
-    "id": "6b4691bf19365805"
+    "price": 1150.10
   },
   {
     "name": "product 18",
     "description": "description  18",
     "category": "category4",
-    "price": 11.18,
-    "id": "e884d0917de7d98d"
+    "price": 1200.60
   },
   {
     "name": "product 19",
     "description": "description 19",
     "category": "category4",
-    "price": 11.19,
-    "id": "833afd1ae4b79869"
+    "price": 1250.40
   },
   {
     "name": "product 20",
     "description": "description 20",
     "category": "category4",
-    "price": 11.2,
-    "id": "1fc4baa7648738ce"
+    "price": 1300.25
   },
   {
     "name": "product 21",
     "description": "description 21",
     "category": "category4",
-    "price": 11.21,
-    "id": "89acd7003f4f981c"
+    "price": 1350.25
   },
   {
     "name": "product 22",
     "description": "description 22",
     "category": "category4",
-    "price": 11.22,
-    "id": "5f2c1d498f2d1b25"
+    "price": 1400.40
   },
   {
     "name": "product 23",
     "description": "description 23",
     "category": "category5",
-    "price": 11.24,
-    "id": "dc5fbbc000a2eabc"
+    "price": 1450.25
   },
   {
     "name": "product 24",
     "description": "description 24",
     "category": "category5",
-    "price": 11.25,
-    "id": "761c3e8bba088804"
+    "price": 1500.25
   },
   {
     "name": "product 25",
     "description": "description 25",
     "category": "category5",
-    "price": 11.26,
-    "id": "df0056184b75bb74"
+    "price": 1550.40
   }
 ]

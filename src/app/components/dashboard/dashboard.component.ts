@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ProductService} from "../../services/product.service";
-import {Product} from "../../data/product";
-import {ProductFromDB} from "../../data/productFromDB";
-import {isUndefined} from "util";
+import {ProductService} from '../../services/product.service';
+import {ProductFromDB} from '../../data/productFromDB';
 
 @Component({
   selector: 'dashboard',
@@ -46,8 +44,8 @@ export class DashboardComponent implements OnInit{
 
   pagination(page: number) {
     this.currentPage = this.currentPage + page;
-    if (this.currentPage > this.numberOfPages) this.currentPage = this.numberOfPages;
-    if (this.currentPage < 1) this.currentPage = 1;
+    if (this.currentPage > this.numberOfPages) { this.currentPage = this.numberOfPages; }
+    if (this.currentPage < 1) { this.currentPage = 1; }
     this.getProducts(this.selectedCategories, this.currentPage, this.priceFrom, this.priceTo, this.productName);
   }
 
@@ -57,20 +55,18 @@ export class DashboardComponent implements OnInit{
   ngOnInit() {
     this.priceFrom = -1;
     this.priceTo = 9999999;
-    this.productName = '';
-    this.getProducts(this.selectedCategories, 1, this.priceFrom, this.priceTo, this.productName);
-    this.getNumberOfPages(this.selectedCategories, this.priceFrom, this.priceTo, this.productName);
+    this.productName = ' ';
+    this.productService.getCategories().subscribe(data => {
+      this.selectedCategories = data;
+      this.getProducts(data, 1, this.priceFrom, this.priceTo, ' ');
+      this.getNumberOfPages(data, this.priceFrom, this.priceTo, ' ');
+    });
   }
 
 
   getNumberOfPages(categories: string[], priceFrom: number, priceTo: number, productName: string) {
     this.productService.getProductsNumber(categories, priceFrom, priceTo, productName)
-      .subscribe(numberOfPages => {
-        this.numberOfPages = Math.ceil(numberOfPages['_body'] / 3);
-        if (this.numberOfPages < 1) {
-          this.numberOfPages = 1;
-        }
-      });
+      .subscribe(numberOfPages => this.numberOfPages = numberOfPages['_body']);
   }
 
   getProducts(categories: string[], currentPage: number, priceFrom: number, priceTo: number, productName: string) {

@@ -60,19 +60,19 @@ export class CartService {
     localStorage.setItem('shopCart', JSON.stringify(shopCart));
     this.cartProductSource.next(shopCart);
 
-    cartPrice = (parseInt(cartPrice, 10) + product.price).toString();
+    cartPrice = (parseFloat(cartPrice) + product.price).toString();
     localStorage.setItem('cartPrice', cartPrice.toString());
-    this.cartPriceSource.next(parseInt(cartPrice, 10));
+    this.cartPriceSource.next(parseFloat(cartPrice));
 
-    cartNumber = (parseInt(cartNumber, 10) + 1).toString();
-    this.numberOfProductSource.next(parseInt(cartNumber, 10));
+    cartNumber = (parseFloat(cartNumber) + 1).toString();
+    this.numberOfProductSource.next(parseFloat(cartNumber));
     localStorage.setItem('cartNumber', cartNumber);
   }
 
   removeProductFromCard(product: ProductFromDB): void {
     const shopCart: CartProduct[] = JSON.parse(localStorage.getItem('shopCart'));
-    const cartPrice: number = parseInt(localStorage.getItem('cartPrice'), 10);
-    const cartNumber: number = parseInt(localStorage.getItem('cartNumber'), 10);
+    const cartPrice: number = parseFloat(localStorage.getItem('cartPrice'));
+    const cartNumber: number = parseFloat(localStorage.getItem('cartNumber'));
 
     for (const i in shopCart) {
       if (shopCart[i].product._id === product._id) {
@@ -94,7 +94,7 @@ export class CartService {
 
   removeOneProductFromCard(product: ProductFromDB): void {
     const shopCart: CartProduct[] = JSON.parse(localStorage.getItem('shopCart'));
-    const cartPrice: number = parseInt(localStorage.getItem('cartPrice'), 10);
+    const cartPrice: number = parseFloat(localStorage.getItem('cartPrice'));
     const cartNumber: number = parseInt(localStorage.getItem('cartNumber'), 10);
 
     for (const i in shopCart) {
