@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Product} from '../data/product';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Order} from '../data/order';
 import {Http, RequestOptions} from '@angular/http';
-import {ProductFromDB} from '../data/productFromDB';
+import {Product} from '../data/product';
 import {CartProduct} from '../data/cartProduct';
 
 @Injectable()
@@ -12,7 +11,7 @@ export class CartService {
   constructor(private http: Http) {
   }
 
-  saveOrderHttp = 'http://localhost:5500/orders';
+  saveOrderHttp = 'http://localhost:5000/orders';
 
   private cartPriceSource: BehaviorSubject<number> = new BehaviorSubject(0);
   cartPrice = this.cartPriceSource.asObservable();
@@ -23,28 +22,18 @@ export class CartService {
   private numberOfProductSource: BehaviorSubject<number> = new BehaviorSubject(0);
   numberOfProduct = this.numberOfProductSource.asObservable();
 
-  saveOrder(fullName: string, address: string, products: Product[]) {
-    let headers = new Headers({'Content-Type': 'application/json'});
-    let options = new RequestOptions(headers);
-    var order = new Order(fullName, address, products);
-    console.log('order: ' + JSON.stringify(order));
-    this.http.post(this.saveOrderHttp, order, options).subscribe();
-    this.cartPriceSource.next(0);
-    this.cartProductSource.next([]);
-    this.numberOfProductSource.next(0);
-    return;
+  saveOrder(order: Order) {
+    const headers = new Headers({'Content-Type': 'application/json'});
+    const options = new RequestOptions(headers);
+
+    return this.http
+      .post(this.saveOrderHttp, order, options);
   }
 
-  addProductToCart(product: ProductFromDB) {
-
-    var shopCart: CartProduct[] = JSON.parse(localStorage.getItem('shopCart'));
-    var cartPrice: string = localStorage.getItem('cartPrice')
-    var cartNumber: string = localStorage.getItem('cartNumber')
-    var founded = false;
-
+  addProductToCart(product: Product) {
+    let shopCart: CartProduct[] = JSON.parse(sessionStorage.getItem('shopCart'));
+    let founded = false;
     shopCart = (shopCart === null) ? [] : shopCart;
-    cartPrice = (cartPrice === null) ? '0' : cartPrice;
-    cartNumber = (cartNumber === null) ? '0' : cartNumber;
 
     for (const i in shopCart) {
       if (shopCart[i].product._id === product._id) {
@@ -52,66 +41,58 @@ export class CartService {
         founded = true;
       }
     }
-
-    if (!founded) {
-      shopCart.push(new CartProduct(product, 1));
-    }
-
-    localStorage.setItem('shopCart', JSON.stringify(shopCart));
-    this.cartProductSource.next(shopCart);
-
-    cartPrice = (parseFloat(cartPrice) + product.price).toString();
-    localStorage.setItem('cartPrice', cartPrice.toString());
-    this.cartPriceSource.next(parseFloat(cartPrice));
-
-    cartNumber = (parseFloat(cartNumber) + 1).toString();
-    this.numberOfProductSource.next(parseFloat(cartNumber));
-    localStorage.setItem('cartNumber', cartNumber);
+    if (!founded) { shopCart.push(new CartProduct(product, 1)); }
+    this.setData(shopCart, product.price);
   }
 
-  removeProductFromCard(product: ProductFromDB): void {
-    const shopCart: CartProduct[] = JSON.parse(localStorage.getItem('shopCart'));
-    const cartPrice: number = parseFloat(localStorage.getItem('cartPrice'));
-    const cartNumber: number = parseFloat(localStorage.getItem('cartNumber'));
-
+  removeProductFromCard(product: Product): void {
+    const shopCart: CartProduct[] = JSON.parse(sessionStorage.getItem('shopCart'));
     for (const i in shopCart) {
       if (shopCart[i].product._id === product._id) {
-
-        localStorage.setItem('cartNumber', (cartNumber - shopCart[i].number).toString());
-        this.numberOfProductSource.next(cartNumber - shopCart[i].number);
-
-        localStorage.setItem('cartPrice', (cartPrice - (shopCart[i].number * shopCart[i].product.price)).toString());
-        this.cartPriceSource.next(cartPrice - (shopCart[i].number * shopCart[i].product.price));
-
+        const shopCartNumber = shopCart[i].number;
         shopCart.splice(parseInt(i, 10), 1);
+        this.setData(shopCart, -product.price * shopCartNumber);
         break;
       }
     }
+  }
 
-    localStorage.setItem('shopCart', JSON.stringify(shopCart));
+  removeOneProductFromCard(product: Product): void {
+    const shopCart: CartProduct[] = JSON.parse(sessionStorage.getItem('shopCart'));
+    for (const i in shopCart) {
+      if (shopCart[i].product._id === product._id) {
+        shopCart[i] = new CartProduct(product, shopCart[i].number - 1);
+        this.setData(shopCart, -product.price);
+        break;
+      }
+    }
+  }
+
+  private setData(shopCart: CartProduct[], productPrice: number) {
+    let cartPrice = sessionStorage.getItem('cartPrice');
+    let cartProductNumber = 0;
+    cartPrice = (cartPrice === null) ? '0' : cartPrice;
+    shopCart.forEach(p => cartProductNumber += p.number );
+
+    sessionStorage.setItem('cartPrice', (parseFloat(cartPrice) + productPrice).toFixed(2));
+    sessionStorage.setItem('cartNumber', cartProductNumber.toFixed(2));
+    sessionStorage.setItem('shopCart', JSON.stringify(shopCart));
+
+    this.cartPriceSource.next((parseFloat(cartPrice) + productPrice));
+    this.numberOfProductSource.next(cartProductNumber);
     this.cartProductSource.next(shopCart);
   }
 
-  removeOneProductFromCard(product: ProductFromDB): void {
-    const shopCart: CartProduct[] = JSON.parse(localStorage.getItem('shopCart'));
-    const cartPrice: number = parseFloat(localStorage.getItem('cartPrice'));
-    const cartNumber: number = parseInt(localStorage.getItem('cartNumber'), 10);
+  public reloadData() {
+    let cartPrice = sessionStorage.getItem('cartPrice');
+    let cartProductNumber = sessionStorage.getItem('cartNumber');
+    let shopCart = sessionStorage.getItem('shopCart');
+    cartPrice = (cartPrice === null) ? '0' : cartPrice;
+    cartProductNumber = (cartProductNumber === null) ? '0' : cartProductNumber;
+    shopCart = (shopCart === null) ? '[]' : shopCart;
 
-    for (const i in shopCart) {
-      if (shopCart[i].product._id === product._id) {
-
-        localStorage.setItem('cartNumber', (cartNumber - 1).toString());
-        this.numberOfProductSource.next(cartNumber - 1);
-
-        localStorage.setItem('cartPrice', (cartPrice - shopCart[i].product.price).toString());
-        this.cartPriceSource.next(cartPrice - shopCart[i].product.price);
-
-        shopCart[i] = new CartProduct(product, shopCart[i].number - 1);
-        break;
-      }
-    }
-
-    localStorage.setItem('shopCart', JSON.stringify(shopCart));
-    this.cartProductSource.next(shopCart);
+    this.cartPriceSource.next((parseFloat(cartPrice)));
+    this.numberOfProductSource.next(parseFloat(cartProductNumber));
+    this.cartProductSource.next(JSON.parse(shopCart));
   }
 }

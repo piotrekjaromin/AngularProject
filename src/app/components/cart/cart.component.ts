@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CartService} from '../../services/cart.service';
-import {ProductFromDB} from '../../data/productFromDB';
+import {Product} from '../../data/product';
 import {CartProduct} from '../../data/cartProduct';
 
 @Component({
@@ -17,11 +17,11 @@ export class CartComponent implements OnInit {
     this.cartService.cartProduct.subscribe(products => this.productFromCart = products);
   }
 
-  removeProduct(product: ProductFromDB) {
+  removeProduct(product: Product) {
     this.cartService.removeProductFromCard(product);
   }
 
-  changeQuantity(product: ProductFromDB, action: number, productNumber: number) {
+  changeQuantity(product: Product, action: number, productNumber: number) {
     if (action > 0) {
       this.cartService.addProductToCart(product);
     } else if (action < 0 && productNumber > 0) {

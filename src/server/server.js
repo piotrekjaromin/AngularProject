@@ -11,6 +11,9 @@ app.use(cors());
 var productRouter = require('./routes/productRoutes')
 app.use('/products', productRouter);
 
+var ordertRouter = require('./routes/orderRoutes')
+app.use('/orders', ordertRouter);
+
 mongoose.connect('mongodb://piotrekjaromin:password@ds042677.mlab.com:42677/mean_project')
   .then(console.log('Start'))
   .catch(err => { // if error we will be here

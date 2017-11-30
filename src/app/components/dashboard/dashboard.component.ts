@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductService} from '../../services/product.service';
-import {ProductFromDB} from '../../data/productFromDB';
+import {Product} from '../../data/product';
 
 @Component({
   selector: 'dashboard',
@@ -10,7 +10,7 @@ import {ProductFromDB} from '../../data/productFromDB';
 export class DashboardComponent implements OnInit{
   selectedCategories: string[] = [];
   numberOfPages: number;
-  products: ProductFromDB[] = []
+  products: Product[] = []
   currentPage = 1;
   priceFrom: number;
   priceTo: number;

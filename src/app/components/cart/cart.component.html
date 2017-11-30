@@ -14,8 +14,8 @@
   <tbody>
   <tr *ngFor="let product of productFromCart">
     <td>{{product.product.name}}</td>
-    <td>{{product.product.price}}</td>
-    <td>{{product.number * product.product.price}}</td>
+    <td>{{(product.product.price).toFixed(2)}}</td>
+    <td>{{(product.number * product.product.price).toFixed(2)}}</td>
     <td>
       <button class="btn btn-xs" (click)="changeQuantity(product.product, -1, product.number)">-</button>
       <button class="btn btn-light btn-xs" disabled>{{product.number}}</button>

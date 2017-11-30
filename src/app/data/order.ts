@@ -1,5 +1,5 @@
-import {Product} from './product';
+import {CartProduct} from './cartProduct';
 
 export class Order {
-  constructor(public fullName: string, public address: string, public products: Product[]) {}
+  constructor(public fullName: string, public address: string, public price: number, public products: CartProduct[]) {}
 }

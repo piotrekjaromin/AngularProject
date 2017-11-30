@@ -2,3 +2,7 @@
   background-color: #CFD8DC !important;
   color: white;
 }
+
+.table {
+  table-layout: fixed;
+}

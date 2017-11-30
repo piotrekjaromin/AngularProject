@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CartService} from '../../services/cart.service';
-import {ProductFromDB} from '../../data/productFromDB';
+import {Product} from '../../data/product';
 
 @Component({
   selector: 'list-of-products',
@@ -8,7 +8,7 @@ import {ProductFromDB} from '../../data/productFromDB';
   styleUrls: ['./listOfProducts.component.css']
 })
 export class ListOfProductsComponent {
-  @Input() products: ProductFromDB[];
+  @Input() products: Product;
   @Input() currentPage = 1;
   @Input() numberOfPages: number;
   @Output() currentPageEmiter = new EventEmitter<number>();
@@ -20,7 +20,7 @@ export class ListOfProductsComponent {
     this.currentPageEmiter.emit(page);
   }
 
-  addToCart(product: ProductFromDB): void {
+  addToCart(product: Product): void {
     this.cartService.addProductToCart(product);
   }
 

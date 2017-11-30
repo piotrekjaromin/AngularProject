@@ -54,9 +54,11 @@ export class LeftMenuComponent implements OnInit{
     }
   }
   onBlurName() {
-    (name === '') ?
-      this.nameEmiter.emit(' ') :
+    if (this.name === '') {
+      this.nameEmiter.emit(' ');
+    } else {
       this.nameEmiter.emit(this.name);
+    }
   }
 }
 

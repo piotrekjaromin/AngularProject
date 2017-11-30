@@ -4,7 +4,7 @@
     <p class="product-description">{{product.description}}</p>
 
   </div>
-  <button class="btn btn-secondary add-to-cart" (click)="addToCart(product)">{{product.price}} zł</button>
+  <button class="btn btn-secondary add-to-cart" (click)="addToCart(product)">{{product.price.toFixed(2)}} zł</button>
 </div>
 
 <div class="btn-group" id="pagination">
