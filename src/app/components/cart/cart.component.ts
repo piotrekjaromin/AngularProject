@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CartService} from '../../services/cart.service';
 import {Product} from '../../data/product';
 import {CartProduct} from '../../data/cartProduct';
+import {ViewService} from "../../services/view.service";
 
 @Component({
   selector: 'cart',
@@ -10,7 +11,8 @@ import {CartProduct} from '../../data/cartProduct';
 })
 export class CartComponent implements OnInit {
   productFromCart: CartProduct[];
-  constructor(private cartService: CartService) {
+
+  constructor(private cartService: CartService, private viewService: ViewService) {
   }
 
   ngOnInit(): void {
@@ -29,5 +31,8 @@ export class CartComponent implements OnInit {
     }
   }
 
+  changeView(viewValue: string) {
+    this.viewService.setView(viewValue);
+  }
 }
 

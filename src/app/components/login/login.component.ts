@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Md5} from 'ts-md5/dist/md5';
 import {UserService} from '../../services/user.service';
 import {User} from '../../data/user';
+import {ViewService} from "../../services/view.service";
 
 @Component({
   selector: 'login',
@@ -15,7 +16,7 @@ export class LoginComponent {
   status = '';
 
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private viewService: ViewService) {
   }
 
   sendLogin() {
@@ -31,6 +32,10 @@ export class LoginComponent {
           }
         }
       );
+  }
+
+  changeView(viewValue: string) {
+    this.viewService.setView(viewValue);
   }
 
 }

@@ -1,4 +1,12 @@
 <nav class="navbar bg-dark text-light">
   <top-nav></top-nav>
 </nav>
-<router-outlet>
+
+<dashboard *ngIf="view === 'dashboard'"></dashboard>
+<cart *ngIf="view === 'cart'"></cart>
+<login *ngIf="view === 'login'"></login>
+<registration *ngIf="view === 'registration'"></registration>
+<order *ngIf="view === 'order'"></order>
+<logout *ngIf="view === 'logout'"></logout>
+<end-form *ngIf="view === 'endform'"></end-form>
+

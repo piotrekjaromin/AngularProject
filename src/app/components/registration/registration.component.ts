@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Md5} from 'ts-md5/dist/md5';
 import {UserService} from '../../services/user.service';
 import {User} from '../../data/user';
+import {ViewService} from "../../services/view.service";
 
 @Component({
   selector: 'registration',
@@ -14,7 +15,7 @@ export class RegistrationComponent implements OnInit{
   status = '';
 
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private viewService: ViewService) {
   }
 
   ngOnInit(): void {
@@ -35,6 +36,10 @@ export class RegistrationComponent implements OnInit{
         this.user.password = tmp;
       }}
     );
+  }
+
+  changeView(viewValue: string) {
+    this.viewService.setView(viewValue);
   }
 
 }

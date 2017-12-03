@@ -19,6 +19,7 @@ import {RegistrationComponent} from "./components/registration/registration.comp
 import {LogoutComponent} from "./components/logout/logout.component";
 import {OrderComponent} from "./components/order/order.component";
 import {OrderService} from "./services/order.service";
+import {ViewService} from "./services/view.service";
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import {OrderService} from "./services/order.service";
     AppRoutingModule,
     HttpModule,
   ],
-  providers: [ProductService, CartService, UserService, OrderService],
+  providers: [ProductService, CartService, UserService, OrderService, ViewService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

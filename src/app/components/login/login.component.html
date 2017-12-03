@@ -1,7 +1,7 @@
 <div class="alert alert-success" *ngIf="status === 'success'">
   <strong>Success!</strong>
 </div>
-<button class="btn" routerLink="/dashboard" *ngIf="status === 'success'">Go to dashboard</button>
+<button class="btn" (click)="changeView('dashboard')" *ngIf="status === 'success'">Go to dashboard</button>
 
 
 <form *ngIf="status !== 'success'">

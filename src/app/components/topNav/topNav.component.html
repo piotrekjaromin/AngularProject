@@ -5,15 +5,15 @@
 
       <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" *ngIf="loggedUser === ''">User
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" routerLink="/login">Login</a>
-        <a class="dropdown-item" routerLink="/registration">Registration</a>
+        <a class="dropdown-item" (click)="changeView('login')">Login</a>
+        <a class="dropdown-item" (click)="changeView('registration')">Registration</a>
       </div>
       </button>
 
     <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" *ngIf="loggedUser !== ''">{{loggedUser}}
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" routerLink="/orders">Orders</a>
-        <a class="dropdown-item" routerLink="/logout">Logout</a>
+        <a class="dropdown-item" (click)="changeView('order')">Orders</a>
+        <a class="dropdown-item" (click)="changeView('logout')">Logout</a>
       </div>
     </button>
 
@@ -23,7 +23,7 @@
   <div class="col-sm-8" id="cart-details">
     Cart: {{numberOfProduct}} product(s), {{price.toFixed(2)}} zł
 
-      <button class="btn btn-sm" id="go-to-cart" routerLink="/cart">Cart</button>
+      <button class="btn btn-sm" id="go-to-cart" (click)="changeView('cart')">Cart</button>
 
   </div>
 </div>

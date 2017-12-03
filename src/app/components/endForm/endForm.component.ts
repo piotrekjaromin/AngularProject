@@ -3,6 +3,7 @@ import {CartService} from '../../services/cart.service';
 import {Order} from '../../data/order';
 import {UserService} from "../../services/user.service";
 import {User} from "../../data/user";
+import {ViewService} from "../../services/view.service";
 
 @Component({
   selector: 'end-form',
@@ -16,7 +17,7 @@ export class EndFormComponent implements OnInit {
 
   user: User;
 
-  constructor(private cartService: CartService, private userService: UserService) {
+  constructor(private cartService: CartService, private viewService: ViewService) {
   }
 
   ngOnInit(): void {
@@ -46,6 +47,10 @@ export class EndFormComponent implements OnInit {
 
   insertAddress(event: any) {
     this.address = event.target.value;
+  }
+
+  changeView(viewValue: string) {
+    this.viewService.setView(viewValue);
   }
 }
 

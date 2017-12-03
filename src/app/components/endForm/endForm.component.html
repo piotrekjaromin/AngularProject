@@ -16,4 +16,4 @@
 <div class="alert alert-success" *ngIf="isSuccess">
   <strong>Success!</strong>
 </div>
-<button class="btn" routerLink="/dashboard" *ngIf="isSuccess">Go to dashboard</button>
+<button class="btn" (click)="changeView('dashboard')" *ngIf="isSuccess">Go to dashboard</button>
