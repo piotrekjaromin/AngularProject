@@ -2,22 +2,5 @@
   <strong>Success!</strong>
 </div>
 <button class="btn" routerLink="/dashboard" *ngIf="status === 'success'">Go to dashboard</button>
-
-
-<form *ngIf="status !== 'success'">
-  <div class="form-group">
-    <label for="login">Login</label>
-    <input type="email" class="form-control" id="login" name="login" aria-describedby="emailHelp"
-            required="required" [(ngModel)]="login" >
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" class="form-control" id="password" name="password" required="required" [(ngModel)]="password">
-  </div>
-  <button class="btn" (click)="sendLogin()">Login</button>
-</form>
-
-<div class="alert alert-danger" *ngIf="status === 'failure'">
-  <strong>Wrong login or password.</strong>
-</div>
+<button class="btn" (click)="logout()" *ngIf="status !== 'success'">Logout</button>
 

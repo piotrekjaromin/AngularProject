@@ -19,10 +19,10 @@ userRouter.get('/', function (req, res) {
 
 /////////////////////////////////////////////////////////
 
-userRouter.get('/:id', function (req, res) {
-  Order.findById(req.params.id, function (err, order) {
+userRouter.get('/:token', function (req, res) {
+  User.find({token: req.params.token}, function (err, user) {
     if (err) throw err;
-    res.status(200).send().end();
+    res.status(200).send(user).end();
   });
 });
 
@@ -75,7 +75,8 @@ userRouter.post('/logout', function (req, res) {
 
   console.log(req.body);
   console.log(req.body.token);
-  User.find({token: req.body.token}, function (err, user) {
+  console.log(req.headers);
+  User.find({token: req.body.login}, function (err, user) {
 
     if (user.length === 0) {
       res.status(401).send('User not found.').end();

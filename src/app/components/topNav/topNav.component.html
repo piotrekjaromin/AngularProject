@@ -1,23 +1,25 @@
 <div class="row">
   <div class="col-sm-4">
     Sport shop
-    <div class="dropdown">
+    <div class="dropdown show">
 
       <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" *ngIf="loggedUser === ''">User
-        <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li><a routerLink="/login">Login</a></li>
-        <li><a routerLink="/registration">Registration</a></li>
-      </ul>
-    </div>
-    <div class="dropdown" *ngIf="loggedUser !== ''">
-      <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">{{loggedUser}}
-        <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        <li><a routerLink="/login">Logout</a></li>
-      </ul>
-    </div>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" routerLink="/login">Login</a>
+        <a class="dropdown-item" routerLink="/registration">Registration</a>
+      </div>
+      </button>
+
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" *ngIf="loggedUser !== ''">{{loggedUser}}
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" routerLink="/orders">Orders</a>
+        <a class="dropdown-item" routerLink="/logout">Logout</a>
+      </div>
+    </button>
+
   </div>
+  </div>
+
   <div class="col-sm-8" id="cart-details">
     Cart: {{numberOfProduct}} product(s), {{price.toFixed(2)}} zł
 

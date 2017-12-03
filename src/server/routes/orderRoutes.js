@@ -24,6 +24,8 @@ orderRouter.get('/fullnames', function (req, res) {
   });
 });
 
+//////////////////////////////////////////////////////////
+
 orderRouter.get('/realized', function (req, res) {
   Order.find({isRealised: true}, function(error, fullnames) {
     res.status(200).send(fullnames).end();
@@ -35,6 +37,23 @@ orderRouter.get('/realized', function (req, res) {
 
 orderRouter.get('/notrealized', function (req, res) {
   Order.find({isRealised: false}, function(error, fullnames) {
+    res.status(200).send(fullnames).end();
+  });
+});
+
+//////////////////////////////////////////////////////////
+
+orderRouter.get('/realized/users/:login', function (req, res) {
+  Order.find({isRealised: true, login: req.params.login}, function(error, fullnames) {
+    res.status(200).send(fullnames).end();
+  });
+});
+
+
+////////////////////////////////////////////////////////////
+
+orderRouter.get('/notrealized/users/:login', function (req, res) {
+  Order.find({isRealised: false, login: req.params.login}, function(error, fullnames) {
     res.status(200).send(fullnames).end();
   });
 });

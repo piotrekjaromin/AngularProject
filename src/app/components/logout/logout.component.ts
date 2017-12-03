@@ -10,22 +10,21 @@ import {User} from '../../data/user';
 })
 export class LogoutComponent {
 
-  login: string;
-  password: string;
-  status = '';
 
+  status = ''
 
   constructor(private userService: UserService) {
   }
 
   logout() {
-    this.userService.login(new User(this.login, Md5.hashStr(this.password).toString(), '', '', ''))
+    this.userService.logout(sessionStorage.getItem('token'))
       .subscribe(p => {
+        console.log(p);
           if (p.status === 200) {
             this.status = 'success';
-            sessionStorage.setItem('token', p.text());
-            sessionStorage.setItem('login', this.login);
-            this.userService.loggerUserSource.next(this.login);
+            sessionStorage.setItem('token', '');
+            sessionStorage.setItem('login', '');
+            this.userService.loggerUserSource.next('');
           } else {
             this.status = 'failure';
           }

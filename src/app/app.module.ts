@@ -17,6 +17,8 @@ import {LoginComponent} from "./components/login/login.component";
 import {UserService} from "./services/user.service";
 import {RegistrationComponent} from "./components/registration/registration.component";
 import {LogoutComponent} from "./components/logout/logout.component";
+import {OrderComponent} from "./components/order/order.component";
+import {OrderService} from "./services/order.service";
 
 @NgModule({
   declarations: [
@@ -29,15 +31,16 @@ import {LogoutComponent} from "./components/logout/logout.component";
     DashboardComponent,
     LoginComponent,
     RegistrationComponent,
-    LogoutComponent
+    LogoutComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpModule
+    HttpModule,
   ],
-  providers: [ProductService, CartService, UserService],
+  providers: [ProductService, CartService, UserService, OrderService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

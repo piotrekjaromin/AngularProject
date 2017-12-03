@@ -7,6 +7,7 @@ import {AppComponent} from './components/main/app.component';
 import {LoginComponent} from './components/login/login.component';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {LogoutComponent} from './components/logout/logout.component';
+import {OrderComponent} from "./components/order/order.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'registration', component: RegistrationComponent},
   { path: 'logout', component: LogoutComponent},
+  { path: 'orders', component: OrderComponent},
 ];
 
 @NgModule({

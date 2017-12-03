@@ -5,6 +5,7 @@ var Order = new Schema({
   fullName: String,
   price: Number,
   isRealised: Boolean,
+  login: String,
   products: [
     {
       number: Number,

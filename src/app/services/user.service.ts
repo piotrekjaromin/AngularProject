@@ -26,10 +26,16 @@ export class UserService {
     return this.http.post(this.getProductHttp, user, options);
   }
 
-  logout(token: String) {
-    const headers = new Headers({'Content-Type': 'application/json'});
+  logout(token: string) {
+
+    let headers = new Headers({'Content-Type': 'application/json'})
+    headers['token'] = token;
     const options = new RequestOptions(headers);
-    return this.http.post(this.getProductHttp + '/logout', '{"token": "' + token + '"}', options);
+    return this.http.post(this.getProductHttp + '/logout', new User(token, '', '', '', ''), options);
+  }
+
+  get(token: string) {
+
   }
 
 }
