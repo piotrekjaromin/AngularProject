@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
-import {Http, RequestOptions, Response} from '@angular/http';
+import {Http, Headers, RequestOptions, Response} from '@angular/http';
 import {User} from '../data/user';
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
@@ -28,14 +28,9 @@ export class UserService {
 
   logout(token: string) {
 
-    let headers = new Headers({'Content-Type': 'application/json'})
-    headers['token'] = token;
-    const options = new RequestOptions(headers);
-    return this.http.post(this.getProductHttp + '/logout', new User(token, '', '', '', ''), options);
-  }
-
-  get(token: string) {
-
+    let headers = new Headers({'token': token});
+    const options = new RequestOptions({headers: headers});
+    return this.http.post(this.getProductHttp + '/logout', null, options);
   }
 
 }

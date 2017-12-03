@@ -3,7 +3,9 @@ var app = express();
 
 var orderRouter = express.Router();
 
-var Order = require('../models/order')
+var Order = require('../models/order');
+
+var User = require('../models/user');
 
 /////////////////////////////////////////////////////////
 
@@ -19,7 +21,7 @@ orderRouter.get('/', function (req, res) {
 /////////////////////////////////////////////////////////
 
 orderRouter.get('/fullnames', function (req, res) {
-  Order.find().distinct('fullName', function(error, fullnames) {
+  Order.find().distinct('fullName', function (error, fullnames) {
     res.status(200).send(fullnames).end();
   });
 });
@@ -27,24 +29,40 @@ orderRouter.get('/fullnames', function (req, res) {
 //////////////////////////////////////////////////////////
 
 orderRouter.get('/realized', function (req, res) {
-  Order.find({isRealised: true}, function(error, fullnames) {
-    res.status(200).send(fullnames).end();
-  });
+  User.find({token: req.headers['token']}, function (err, user) {
+      if (user.length !== 0 && user[0].role === 'Admin') {
+        Order.find({isRealised: true}, function (error, fullnames) {
+          res.status(200).send(fullnames).end();
+        });
+      } else {
+        res.status(200).send()
+      }
+    }
+  );
 });
 
 
 ////////////////////////////////////////////////////////////
 
 orderRouter.get('/notrealized', function (req, res) {
-  Order.find({isRealised: false}, function(error, fullnames) {
-    res.status(200).send(fullnames).end();
-  });
+  User.find({token: req.headers['token']}, function (err, user) {
+      console.log(user);
+      if (user.length !== 0 && user[0].role === 'Admin') {
+        Order.find({isRealised: false}, function (error, fullnames) {
+          console.log(fullnames);
+          res.status(200).send(fullnames).end();
+        });
+      } else {
+        res.status(401).send().end();
+      }
+    }
+  );
 });
 
 //////////////////////////////////////////////////////////
 
 orderRouter.get('/realized/users/:login', function (req, res) {
-  Order.find({isRealised: true, login: req.params.login}, function(error, fullnames) {
+  Order.find({isRealised: true, login: req.params.login}, function (error, fullnames) {
     res.status(200).send(fullnames).end();
   });
 });
@@ -53,7 +71,7 @@ orderRouter.get('/realized/users/:login', function (req, res) {
 ////////////////////////////////////////////////////////////
 
 orderRouter.get('/notrealized/users/:login', function (req, res) {
-  Order.find({isRealised: false, login: req.params.login}, function(error, fullnames) {
+  Order.find({isRealised: false, login: req.params.login}, function (error, fullnames) {
     res.status(200).send(fullnames).end();
   });
 });
@@ -79,5 +97,22 @@ orderRouter.post('/', function (req, res) {
 
 /////////////////////////////////////////////////////////
 
+orderRouter.put('/approve', function (req, res) {
+  console.log(req.body._id);
+  User.find({token: req.headers['token']}, function (err, user) {
+    if (user.length !== 0 && user[0].role === 'Admin') {
+      Order.findById(req.body._id, function (err, ord) {
+        console.log(ord);
+        ord.isRealised = true;
+        ord.save(function (err) {
+          console.log('Updated order.');
+        })
+      })
+      res.status(200).send('Added order.').end();
+    } else {
+      res.status(401).send().end();
+    }
+  });
+});
 
 module.exports = orderRouter;

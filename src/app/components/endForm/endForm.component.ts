@@ -34,7 +34,9 @@ export class EndFormComponent implements OnInit {
       JSON.parse(sessionStorage.getItem('shopCart')), false, login)).subscribe(p => {
           if (p.ok) {
             this.isSuccess = true;
-            sessionStorage.clear();
+            sessionStorage.removeItem('shopCart')
+            sessionStorage.removeItem('cartNumber')
+            sessionStorage.removeItem('cartPrice')
             this.cartService.reloadData();
           }
     });
