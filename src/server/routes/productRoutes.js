@@ -15,6 +15,10 @@ productRouter.get('/', function (req, res) {
 
 /////////////////////////////////////////////////////////
 
+
+
+////////////////////////////////////////////////////////
+
 productRouter.get('/categories', function (req, res) {
   Product.find().distinct('category', function(error, categories) {
     res.status(200).send(categories).end();
@@ -75,7 +79,13 @@ productRouter.get('/name/:productname/categories/:categories/pricefrom/:pricefro
 /////////////////////////////////////////////////////////
 
 productRouter.post('/', function (req, res) {
-  var product = new Product(req.body);
+  console.log(req.body)
+  var product = new Product();
+  product.description = req.body.description;
+  product.price = req.body.price;
+  product.category = req.body.category;
+  product.name = req.body.name;
+
   product.save(function (err) {
     if (err) throw err;
     console.log('Added product.');
@@ -86,6 +96,7 @@ productRouter.post('/', function (req, res) {
 /////////////////////////////////////////////////////////
 
 productRouter.put('/:id', function (req, res) {
+  console.log(req.body);
   Product.findById(req.params.id, function (err, product) {
     if (err) throw err;
     product.name = req.body.name;

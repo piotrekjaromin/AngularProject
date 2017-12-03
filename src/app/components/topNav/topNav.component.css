@@ -1,6 +1,16 @@
 #go-to-cart {
   position: absolute;
+  right: 10%;
+  height: 25px;
+  line-height: 15%;
+}
+
+#login-registration {
+  position: absolute;
   right: 3%;
   height: 25px;
-  line-height: 10%;
+  line-height: 15%;
+}
+.dropdown {
+  display: inline;
 }

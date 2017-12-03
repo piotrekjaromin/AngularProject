@@ -2,7 +2,8 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var app = express();
-var cors = require('cors')
+var cors = require('cors');
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json()); // parse application/
@@ -13,6 +14,9 @@ app.use('/products', productRouter);
 
 var ordertRouter = require('./routes/orderRoutes')
 app.use('/orders', ordertRouter);
+
+var userRouter = require('./routes/userRoutes')
+app.use('/users', userRouter);
 
 mongoose.connect('mongodb://piotrekjaromin:password@ds042677.mlab.com:42677/mean_project')
   .then(console.log('Start'))

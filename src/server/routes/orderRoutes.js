@@ -8,12 +8,36 @@ var Order = require('../models/order')
 /////////////////////////////////////////////////////////
 
 orderRouter.get('/', function (req, res) {
-  if (err) throw err;
+
   Order.find(function (err, orders) {
+    if (err) throw err;
     res.status(200).send(orders).end();
   })
 });
 
+
+/////////////////////////////////////////////////////////
+
+orderRouter.get('/fullnames', function (req, res) {
+  Order.find().distinct('fullName', function(error, fullnames) {
+    res.status(200).send(fullnames).end();
+  });
+});
+
+orderRouter.get('/realized', function (req, res) {
+  Order.find({isRealised: true}, function(error, fullnames) {
+    res.status(200).send(fullnames).end();
+  });
+});
+
+
+////////////////////////////////////////////////////////////
+
+orderRouter.get('/notrealized', function (req, res) {
+  Order.find({isRealised: false}, function(error, fullnames) {
+    res.status(200).send(fullnames).end();
+  });
+});
 
 /////////////////////////////////////////////////////////
 

@@ -4,6 +4,7 @@ var Order = new Schema({
   address: String,
   fullName: String,
   price: Number,
+  isRealised: Boolean,
   products: [
     {
       number: Number,

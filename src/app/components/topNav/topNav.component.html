@@ -1,9 +1,27 @@
 <div class="row">
   <div class="col-sm-4">
     Sport shop
+    <div class="dropdown">
+
+      <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" *ngIf="loggedUser === ''">User
+        <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a routerLink="/login">Login</a></li>
+        <li><a routerLink="/registration">Registration</a></li>
+      </ul>
+    </div>
+    <div class="dropdown" *ngIf="loggedUser !== ''">
+      <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown">{{loggedUser}}
+        <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a routerLink="/login">Logout</a></li>
+      </ul>
+    </div>
   </div>
   <div class="col-sm-8" id="cart-details">
-      Cart: {{numberOfProduct}} product(s), {{price.toFixed(2)}} zł
-    <button class="btn btn-sm" id="go-to-cart" routerLink="/cart">Cart</button>
+    Cart: {{numberOfProduct}} product(s), {{price.toFixed(2)}} zł
+
+      <button class="btn btn-sm" id="go-to-cart" routerLink="/cart">Cart</button>
+
   </div>
 </div>

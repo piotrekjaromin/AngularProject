@@ -1,0 +1,40 @@
+<div class="alert alert-success" *ngIf="status === 'success'">
+  <strong>Success!</strong>
+</div>
+
+<button class="btn" routerLink="/dashboard" *ngIf="status === 'success'">Go to dashboard</button>
+
+
+<form *ngIf="status !== 'success'">
+  <h1>Registration</h1>
+  <div class="form-group">
+    <label for="login">Login</label>
+    <input type="email" class="form-control" id="login" name="login" required="required" [(ngModel)]="user.login" >
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="text" class="form-control" id="password" name="password" required="required" [(ngModel)]="user.password">
+  </div>
+
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name" name="name" required="required" [(ngModel)]="user.name">
+  </div>
+
+  <div class="form-group">
+    <label for="surname">Surname</label>
+    <input type="text" class="form-control" id="surname" name="surname" required="required" [(ngModel)]="user.surname">
+  </div>
+
+  <div class="form-group">
+    <label for="address">Address</label>
+    <input type="text" class="form-control" id="address" name="address" required="required" [(ngModel)]="user.address">
+  </div>
+
+  <button class="btn" (click)="register()">Register</button>
+</form>
+
+<div class="alert alert-danger" *ngIf="status === 'failure'">
+  <strong>Login already exists.</strong>
+</div>

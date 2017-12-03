@@ -22,7 +22,7 @@ export class EndFormComponent implements OnInit {
 
     this.cartService.saveOrder(new Order(this.fullName, this.address,
       JSON.parse(sessionStorage.getItem('cartPrice')),
-        JSON.parse(sessionStorage.getItem('shopCart')))).subscribe(p => {
+        JSON.parse(sessionStorage.getItem('shopCart')), false)).subscribe(p => {
           if (p.ok) {
             this.isSuccess = true;
             sessionStorage.clear();
