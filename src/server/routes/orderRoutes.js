@@ -4,7 +4,6 @@ var app = express();
 var orderRouter = express.Router();
 
 var Order = require('../models/order');
-
 var User = require('../models/user');
 
 /////////////////////////////////////////////////////////
@@ -16,7 +15,6 @@ orderRouter.get('/', function (req, res) {
     res.status(200).send(orders).end();
   })
 });
-
 
 /////////////////////////////////////////////////////////
 
@@ -45,9 +43,9 @@ orderRouter.get('/realized', function (req, res) {
 ////////////////////////////////////////////////////////////
 
 orderRouter.get('/notrealized', function (req, res) {
-  User.find({token: req.headers['token']}, function (err, user) {
+  User.find({token: req.headers['token'], role: 'Admin'}, function (err, user) {
       console.log(user);
-      if (user.length !== 0 && user[0].role === 'Admin') {
+      if (user.length !== 0) {
         Order.find({isRealised: false}, function (error, fullnames) {
           console.log(fullnames);
           res.status(200).send(fullnames).end();
@@ -98,7 +96,6 @@ orderRouter.post('/', function (req, res) {
 /////////////////////////////////////////////////////////
 
 orderRouter.put('/approve', function (req, res) {
-  console.log(req.body._id);
   User.find({token: req.headers['token']}, function (err, user) {
     if (user.length !== 0 && user[0].role === 'Admin') {
       Order.findById(req.body._id, function (err, ord) {

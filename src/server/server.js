@@ -19,6 +19,19 @@ io.on('connection', function(socket) {
   io.emit('editProduct', {data: message});
 });
 
+  socket.on('addProduct', (message) => {
+    console.log(message);
+  io.emit('addProduct', {data: message});
+});
+
+  socket.on('addPromotion', (message) => {
+    console.log(message);
+  io.emit('addPromotion', {data: message});
+});
+  socket.on('removePromotion', (message) => {
+    console.log(message);
+  io.emit('removePromotion', {data: message});
+});
 
   socket.on('disconnect', function(){
     console.log('user disconnected');

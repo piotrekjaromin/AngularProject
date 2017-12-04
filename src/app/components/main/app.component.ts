@@ -12,7 +12,7 @@ import {SocketService} from "../../services/socket.service";
 export class AppComponent implements OnInit{
   view = 'dashboard';
   connection;
-  changedMessage: string;
+  changedMessage = '';
 
   constructor(private viewService: ViewService,
               private cartService: CartService,
@@ -23,10 +23,10 @@ export class AppComponent implements OnInit{
     this.viewService.view.subscribe(view => this.view = view);
     this.cartService.reloadData();
     this.userService.reloadData();
-
+    console.log(this.changedMessage);
     this.connection = this.socketService.getMessage().subscribe( message => {
-
         this.changedMessage = message.toString();
+        console.log(this.changedMessage);
       }
     );
   }

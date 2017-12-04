@@ -3,6 +3,7 @@ import {Md5} from 'ts-md5/dist/md5';
 import {UserService} from '../../services/user.service';
 import {User} from '../../data/user';
 import {ViewService} from "../../services/view.service";
+import {CartService} from "../../services/cart.service";
 
 @Component({
   selector: 'logout',
@@ -14,7 +15,7 @@ export class LogoutComponent {
 
   status = ''
 
-  constructor(private userService: UserService, private viewService: ViewService) {
+  constructor(private userService: UserService, private viewService: ViewService, private cartService: CartService) {
   }
 
   logout() {
@@ -23,8 +24,8 @@ export class LogoutComponent {
         console.log(p);
           if (p.status === 200) {
             this.status = 'success';
-            sessionStorage.setItem('token', '');
-            sessionStorage.setItem('login', '');
+            sessionStorage.clear();
+            this.cartService.reloadData();
             this.userService.loggerUserSource.next('');
           } else {
             this.status = 'failure';

@@ -4,6 +4,7 @@ import {Order} from '../data/order';
 import {Http, RequestOptions} from '@angular/http';
 import {Product} from '../data/product';
 import {CartProduct} from '../data/cartProduct';
+import {isUndefined} from "util";
 
 @Injectable()
 export class CartService {
@@ -33,6 +34,7 @@ export class CartService {
   addProductToCart(product: Product) {
     let shopCart: CartProduct[] = JSON.parse(sessionStorage.getItem('shopCart'));
     let founded = false;
+    const productPrice = (product.promotionPrice !== 0 && !isUndefined(product.promotionPrice)) ? product.promotionPrice : product.price;
     shopCart = (shopCart === null) ? [] : shopCart;
 
     for (const i in shopCart) {
@@ -42,7 +44,7 @@ export class CartService {
       }
     }
     if (!founded) { shopCart.push(new CartProduct(product, 1)); }
-    this.setData(shopCart, product.price);
+    this.setData(shopCart, productPrice);
   }
 
   removeProductFromCard(product: Product): void {

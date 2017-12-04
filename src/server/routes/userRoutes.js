@@ -30,13 +30,9 @@ userRouter.post('/', function (req, res) {
   var user = new User(req.body);
   user.role = 'User'
   user.token = '';
-  console.log(user);
-  var isExists = false;
   User.find({login: user.login}, function (err, us) {
-    console.log(us);
     if (us.length !== 0) {
       console.log('User exists');
-      isExists = true;
       res.status(203).send('User exists').end();
       return;
     } else {
@@ -60,7 +56,6 @@ userRouter.post('/login', function (req, res) {
       user[0].token = token;
       user[0].save(function (err) {
         if (err) throw err;
-        console.log('added token to user' + token);
       })
 
       res.status(200).send(token).end();
@@ -70,20 +65,15 @@ userRouter.post('/login', function (req, res) {
 
 userRouter.post('/login/admin', function (req, res) {
 
-  console.log(req.body.login);
-  console.log(req.body.password);
   User.find({login: req.body.login, password: req.body.password, role: 'Admin'}, function (err, user) {
-    console.log(1);
     token = randtoken.generate(16);
     if (err) throw err;
     if (user.length === 0) {
-      console.log(2);
       res.status(401).send('Unauthorized.').end();
     } else {
       user[0].token = token;
       user[0].save(function (err) {
         if (err) throw err;
-        console.log('added token to user' + token);
       })
 
       res.status(200).send(token).end();
@@ -101,7 +91,6 @@ userRouter.post('/logout', function (req, res) {
       user[0].token = '';
       user[0].save(function (err) {
         if (err) throw err;
-        console.log('token removed');
       })
 
       res.status(200).send('removed').end();

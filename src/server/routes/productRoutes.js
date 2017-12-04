@@ -3,33 +3,24 @@ var app = express();
 
 var productRouter = express.Router();
 
-var Product = require('../models/product')
-
+var Product = require('../models/product');
+var User = require('../models/user');
 /////////////////////////////////////////////////////////
 
 productRouter.get('/', function (req, res) {
   Product.find(function (err, products) {
-      res.status(200).send(products).end();
+    res.status(200).send(products).end();
   })
 });
 
 /////////////////////////////////////////////////////////
 
 
-
 ////////////////////////////////////////////////////////
 
 productRouter.get('/categories', function (req, res) {
-  Product.find().distinct('category', function(error, categories) {
+  Product.find().distinct('category', function (error, categories) {
     res.status(200).send(categories).end();
-  });
-});
-
-/////////////////////////////////////////////////////////
-
-productRouter.get('/:id', function (req, res) {
-  Product.findById(req.params.id, function (err, product) {
-    res.status(200).send(product).end();
   });
 });
 
@@ -44,7 +35,11 @@ productRouter.get('/name/:productname/categories/:categories/page/:currentpage/p
   var name = req.params.productname;
 
   var query = categories.length != 0 ?
-    Product.find({category: {$in: categories}, price: {$gte: priceFrom, $lte: priceTo}, name: {$regex: ".*" + name + ".*"}}) :
+    Product.find({
+      category: {$in: categories},
+      price: {$gte: priceFrom, $lte: priceTo},
+      name: {$regex: ".*" + name + ".*"}
+    }) :
     Product.find({price: {$gte: priceFrom, $lte: priceTo}, name: {$regex: ".*" + name + ".*"}});
 
   query
@@ -64,13 +59,19 @@ productRouter.get('/name/:productname/categories/:categories/pricefrom/:pricefro
   var priceTo = req.params.priceto;
   var name = req.params.productname;
   var query = categories.length != 0 ?
-    Product.find({category: {$in: categories}, price: {$gte: priceFrom, $lte: priceTo}, name: {$regex: ".*" + name + ".*"}}) :
+    Product.find({
+      category: {$in: categories},
+      price: {$gte: priceFrom, $lte: priceTo},
+      name: {$regex: ".*" + name + ".*"}
+    }) :
     Product.find({price: {$gte: priceFrom, $lte: priceTo}, name: {$regex: ".*" + name + ".*"}});
 
   query
     .count({}, function (err, count) {
-     count = Math.ceil(count / 3);
-      if (count < 1) { count = 1; }
+      count = Math.ceil(count / 3);
+      if (count < 1) {
+        count = 1;
+      }
 
       res.status(200).send(JSON.stringify(count)).end();
     });
@@ -79,45 +80,87 @@ productRouter.get('/name/:productname/categories/:categories/pricefrom/:pricefro
 /////////////////////////////////////////////////////////
 
 productRouter.post('/', function (req, res) {
-  console.log(req.body)
-  var product = new Product();
-  product.description = req.body.description;
-  product.price = req.body.price;
-  product.category = req.body.category;
-  product.name = req.body.name;
-
-  product.save(function (err) {
-    if (err) throw err;
-    console.log('Added product.');
+  User.find({token: req.headers['token'], role: 'Admin'}, function (err, user) {
+    if (user.length !== 0) {
+      var product = new Product();
+      product.name = req.body.name;
+      product.price = req.body.price;
+      product.description = req.body.description;
+      product.category = req.body.category;
+      product.promotionPrice = 0;
+      product.save(function (err) {
+          if (err) {
+            res.status(500).send(err).end();
+          } else {
+            res.status(200).send('Added product.').end();
+          }
+        }
+      );
+    }
   });
-  res.status(200).send('Added product.').end();
 });
 
 /////////////////////////////////////////////////////////
 
-productRouter.put('/:id', function (req, res) {
-  Product.findById(req.params.id, function (err, product) {
-    if (err) throw err;
-    product.name = req.body.name;
-    product.description = req.body.description;
-    product.category = req.body.category;
-    product.price = req.body.price;
-
-    product.save(function (err) {
-      if (err) throw err;
-      console.log('updated product.');
-    })
-    res.status(200).send('Updated product.').end();
-  });
+productRouter.put('/', function (req, res) {
+  User.find({token: req.headers['token'], role: 'Admin'}, function (err, user) {
+      if (user.length !== 0) {
+        Product.findById(req.body._id, function (err, product) {
+          if (err) throw err;
+          product.name = req.body.name;
+          product.description = req.body.description;
+          product.category = req.body.category;
+          product.price = req.body.price;
+          product.promotionPrice = req.body.promotionPrice;
+          product.save(function (err) {
+            if (err) {
+              res.status(500).send(err).end();
+            } else {
+              res.status(200).send('updated product.').end();
+            }
+          })
+        });
+      }
+    }
+  );
 });
 
-productRouter.delete('/:id', function (req, res) {
-  Product.findByIdAndRemove({_id: req.params.id},
-    function(err, product){
-      if (err) throw err;
-      console.log('remove product.');
-    });
-  res.status(200).send('Remove product.').end();
+productRouter.put('/promotion/add', function (req, res) {
+  User.find({token: req.headers['token'], role: 'Admin'}, function (err, user) {
+      if (user.length !== 0) {
+        Product.findById(req.body._id, function (err, product) {
+          if (err) throw err;
+          product.promotionPrice = req.body.promotionPrice;
+          product.save(function (err) {
+            if (err) {
+              res.status(500).send(err).end();
+            } else {
+              res.status(200).send('Added promotion.').end();
+            }
+          })
+        });
+      }
+    }
+  );
+});
+
+productRouter.put('/promotion/remove', function (req, res) {
+  User.find({token: req.headers['token'], role: 'Admin'}, function (err, user) {
+      if (user.length !== 0) {
+        Product.findById(req.body._id, function (err, product) {
+          if (err) throw err;
+          product.promotionPrice = 0;
+          product.save(function (err) {
+            if (err) {
+              res.status(500).send(err).end();
+            } else {
+              res.status(200).send('Added promotion.').end();
+            }
+          })
+        });
+      }
+    }
+  );
 });
 
 module.exports = productRouter;

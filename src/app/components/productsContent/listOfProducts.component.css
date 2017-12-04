@@ -13,3 +13,12 @@ p.product-name {
   position: absolute;
   right: 3%;
 }
+.promotion{
+  background: yellow;
+  color: black;
+}
+.details {
+  position: absolute;
+  right: 12%;
+  top: 30%;
+}

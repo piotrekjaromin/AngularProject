@@ -24,9 +24,21 @@ export class SocketService implements OnDestroy {
     const observable = new Observable(observer => {
       this.socket = io('http://localhost:5000');
       this.socket.on('editProduct', (message) => {
-        console.log(message);
         observer.next(message.data);
       });
+
+      this.socket.on('addProduct', (message) => {
+        observer.next(message.data);
+      });
+
+      this.socket.on('addPromotion', (message) => {
+        observer.next(message.data);
+      });
+
+      this.socket.on('removePromotion', (message) => {
+        observer.next(message.data);
+      });
+
       return () => {
         this.socket.disconnect();
       };
