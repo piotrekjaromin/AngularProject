@@ -11,15 +11,14 @@ import {CartService} from './services/cart.service';
 import {CartComponent} from './components/cart/cart.component';
 import {EndFormComponent} from './components/endForm/endForm.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
-import {AppRoutingModule} from './app-routing.module';
 import {HttpModule} from '@angular/http';
-import {LoginComponent} from "./components/login/login.component";
-import {UserService} from "./services/user.service";
-import {RegistrationComponent} from "./components/registration/registration.component";
-import {LogoutComponent} from "./components/logout/logout.component";
-import {OrderComponent} from "./components/order/order.component";
-import {OrderService} from "./services/order.service";
-import {ViewService} from "./services/view.service";
+import {LoginComponent} from './components/login/login.component';
+import {UserService} from './services/user.service';
+import {RegistrationComponent} from './components/registration/registration.component';
+import {LogoutComponent} from './components/logout/logout.component';
+import {OrderComponent} from './components/order/order.component';
+import {OrderService} from './services/order.service';
+import {ViewService} from './services/view.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +37,6 @@ import {ViewService} from "./services/view.service";
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule,
     HttpModule,
   ],
   providers: [ProductService, CartService, UserService, OrderService, ViewService],

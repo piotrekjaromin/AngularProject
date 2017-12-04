@@ -10,7 +10,7 @@
       </div>
       </button>
 
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" *ngIf="loggedUser !== ''">{{loggedUser}}
+    <button class="btn btn-sm dropdown-toggle" type="button" data-toggle="dropdown" *ngIf="loggedUser !== ''">{{loggedUser}}
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         <a class="dropdown-item" (click)="changeView('order')">Orders</a>
         <a class="dropdown-item" (click)="changeView('logout')">Logout</a>

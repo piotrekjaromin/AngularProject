@@ -1,15 +1,15 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Md5} from 'ts-md5/dist/md5';
 import {UserService} from '../../services/user.service';
 import {User} from '../../data/user';
-import {ViewService} from "../../services/view.service";
+import {ViewService} from '../../services/view.service';
 
 @Component({
   selector: 'registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css']
 })
-export class RegistrationComponent implements OnInit{
+export class RegistrationComponent implements OnInit {
 
   user: User;
   status = '';

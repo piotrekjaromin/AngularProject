@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import {Http, Response} from '@angular/http';
-import {User} from '../data/user';
 
 @Injectable()
 export class OrderService {
