@@ -51,7 +51,6 @@ userRouter.post('/', function (req, res) {
 
 userRouter.post('/login', function (req, res) {
 
-  console.log(req.body)
   User.find({login: req.body.login, password: req.body.password}, function (err, user) {
     token = randtoken.generate(16);
     if (err) throw err;
@@ -71,10 +70,14 @@ userRouter.post('/login', function (req, res) {
 
 userRouter.post('/login/admin', function (req, res) {
 
+  console.log(req.body.login);
+  console.log(req.body.password);
   User.find({login: req.body.login, password: req.body.password, role: 'Admin'}, function (err, user) {
+    console.log(1);
     token = randtoken.generate(16);
     if (err) throw err;
     if (user.length === 0) {
+      console.log(2);
       res.status(401).send('Unauthorized.').end();
     } else {
       user[0].token = token;

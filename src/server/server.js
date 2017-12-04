@@ -4,6 +4,27 @@ var bodyParser = require('body-parser');
 var app = express();
 var cors = require('cors');
 
+var http       = require('http');
+var path       = require('path');
+var socket     = require('socket.io');
+var server     = http.createServer(app);
+var io         = socket(server);
+
+app.use(express.static(path.join(__dirname, 'dist')));
+
+io.on('connection', function(socket) {
+
+  socket.on('editProduct', (message) => {
+    console.log(message);
+  io.emit('editProduct', {data: message});
+});
+
+
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+});
+
 
 
 // parse application/x-www-form-urlencoded
@@ -27,6 +48,6 @@ mongoose.connect('mongodb://piotrekjaromin:password@ds042677.mlab.com:42677/mean
 process.exit(1);
 });
 
-app.listen(5000, function () {
+server.listen(5000, function () {
   console.log('Server is running on Port: ', 5000);
 });

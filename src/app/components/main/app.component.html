@@ -10,3 +10,8 @@
 <logout *ngIf="view === 'logout'"></logout>
 <end-form *ngIf="view === 'endform'"></end-form>
 
+<div class="alert alert-warning" role="alert" *ngIf="changedMessage !== ''">
+  {{changedMessage}}
+  <button type="button" class="btn" (click)="closeMessage()">Ok</button>
+</div>
+

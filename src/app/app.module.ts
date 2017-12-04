@@ -19,6 +19,8 @@ import {LogoutComponent} from './components/logout/logout.component';
 import {OrderComponent} from './components/order/order.component';
 import {OrderService} from './services/order.service';
 import {ViewService} from './services/view.service';
+import {SocketService} from "./services/socket.service";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -38,8 +40,9 @@ import {ViewService} from './services/view.service';
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule
   ],
-  providers: [ProductService, CartService, UserService, OrderService, ViewService],
+  providers: [ProductService, CartService, UserService, OrderService, ViewService, SocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

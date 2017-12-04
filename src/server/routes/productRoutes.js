@@ -96,7 +96,6 @@ productRouter.post('/', function (req, res) {
 /////////////////////////////////////////////////////////
 
 productRouter.put('/:id', function (req, res) {
-  console.log(req.body);
   Product.findById(req.params.id, function (err, product) {
     if (err) throw err;
     product.name = req.body.name;
